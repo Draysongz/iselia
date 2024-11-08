@@ -13,10 +13,11 @@ import WebApp from "@twa-dev/sdk";
 import { useEffect, useState } from "react";
 import { useUserLogin } from "./hooks/useAuth";
 import Loading from "./pages/Loading";
-import Intro from "./pages/Intro";
+import Welcome from "./pages/Welcome";
+
 function App() {
    const [initData, setInitData] = useState("");
-   const [page, setPage] = useState("intro"); // State to manage current page ('intro', 'loading', or 'home')
+   const [page, setPage] = useState("welcome"); // State to manage current page ('intro', 'loading', or 'home')
    const userData = useUserLogin(initData);
 
    useEffect(() => {
@@ -34,8 +35,8 @@ function App() {
    }, []);
 
    // If page is 'intro', show Intro page
-   if (page === "intro") {
-     return <Intro />;
+   if (page === "welcome") {
+     return <Welcome />;
    }
 
    // If page is 'loading' and user data is not yet loaded, show Loading page
