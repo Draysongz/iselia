@@ -16,51 +16,49 @@ import Loading from "./pages/Loading";
 import Welcome from "./pages/Welcome";
 
 function App() {
-   const [initData, setInitData] = useState("");
-   const [page, setPage] = useState("welcome"); // State to manage current page ('intro', 'loading', or 'home')
-   
+  const [initData, setInitData] = useState("");
+  const [page, setPage] = useState("welcome"); // State to manage current page ('intro', 'loading', or 'home')
 
-   useEffect(() => {
-     const data = WebApp.initData;
-     setInitData(data);
+  useEffect(() => {
+    const data = WebApp.initData;
+    setInitData(data);
 
-     // Show Intro page for 5 seconds, then switch to Loading
-     const timer = setTimeout(() => {
-       setPage("loading");
-     }, 5000);
+    // Show Intro page for 5 seconds, then switch to Loading
+    const timer = setTimeout(() => {
+      setPage("loading");
+    }, 5000);
 
-     // Clear timer if component unmounts before 5 seconds
-     return () => clearTimeout(timer);
-   }, []);
+    // Clear timer if component unmounts before 5 seconds
+    return () => clearTimeout(timer);
+  }, []);
 
-   // If page is 'intro', show Intro page
-   if (page === "welcome" && !userData) {
-     return <Welcome />;
-   }else if(page === "loading" && !userData){
-    return <Loading />
-   }
+  console.log(page);
 
-   console.log(page)
+  const userData = useUserLogin(initData);
 
-   const userData = useUserLogin(initData);
+  // If page is 'intro', show Intro page
+  if (page === "welcome" && !userData) {
+    return <Welcome />;
+  } else if (page === "loading" && !userData) {
+    return <Loading />;
+  }
 
   return (
     <ChakraProvider theme={customTheme}>
-    <Box width={'100vw'} overflowX={'hidden'} fontFamily={'sans-serif'}
-    >
-      <CharacterProvider>
-      <Router>
-          <Routes>
-            <Route index element={<Home />}  />
-            <Route path="characters" element={<Character />}  />
-            <Route path="team" element={<Team />}/>
-            <Route path="shop" element={<Shop />}  />
-          </Routes>
-        </Router>
-      </CharacterProvider>
-    </Box>
+      <Box width={"100vw"} overflowX={"hidden"} fontFamily={"sans-serif"}>
+        <CharacterProvider>
+          <Router>
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="characters" element={<Character />} />
+              <Route path="team" element={<Team />} />
+              <Route path="shop" element={<Shop />} />
+            </Routes>
+          </Router>
+        </CharacterProvider>
+      </Box>
     </ChakraProvider>
-  )
+  );
 }
 
 export default App
