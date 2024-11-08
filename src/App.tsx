@@ -21,6 +21,7 @@ function App() {
    
 
    useEffect(() => {
+    WebApp.expand()
      const data = WebApp.initData;
      setInitData(data);
 
