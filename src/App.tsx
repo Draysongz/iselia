@@ -19,13 +19,14 @@ function App() {
   const [initData, setInitData] = useState("");
 
   useEffect(() => {
+    WebApp.expand()
     const data = WebApp.initData;
     setInitData(data);
   }, []);
 
  
 
-  const userData = useUserLogin(initData);
+  const {userData} = useUserLogin(initData);
 
 if(userData === null){
   return <Loading />
