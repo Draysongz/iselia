@@ -5,14 +5,14 @@ import { GiZeusSword } from "react-icons/gi";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
 
-interface ContentData {
-  bgImage: string;
-  bg: string;
-  name: string;
-  title: string;
-  description: string;
-  txtImage: string;
-}
+// interface ContentData {
+//   bgImage: string;
+//   bg: string;
+//   name: string;
+//   title: string;
+//   description: string;
+//   txtImage: string;
+// }
 
 interface PlayerProgress {
     coins: number;
@@ -31,12 +31,12 @@ export default function Team() {
   const { isOpen, onOpen, onClose }  = useDisclosure();
 
 
-  const [playerProgress, setPlayerProgress] = useState<PlayerProgress>({
+  const playerProgress : PlayerProgress = {
     coins: 35000,
     questsCompleted: 2,
     monstersKilled: 500,
     gemstone: 1,
-  });
+  }
 
   // Function to set a background image for a specific box
   const handleImageClick = (boxIndex: number, imageUrl: string) => {
