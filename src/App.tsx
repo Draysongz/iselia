@@ -27,7 +27,7 @@ function App() {
 
   const userData = useUserLogin(initData);
 
-if(!userData){
+if(userData === null){
   return <Loading />
 }
 
