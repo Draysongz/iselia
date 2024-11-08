@@ -41,6 +41,8 @@ function App() {
     return <Loading />
    }
 
+   console.log(page)
+
   return (
     <ChakraProvider theme={customTheme}>
     <Box width={'100vw'} overflowX={'hidden'} fontFamily={'sans-serif'}
