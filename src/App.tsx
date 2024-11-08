@@ -17,31 +17,19 @@ import Welcome from "./pages/Welcome";
 
 function App() {
   const [initData, setInitData] = useState("");
-  const [page, setPage] = useState("welcome"); // State to manage current page ('intro', 'loading', or 'home')
 
   useEffect(() => {
     const data = WebApp.initData;
     setInitData(data);
-
-    // Show Intro page for 5 seconds, then switch to Loading
-    const timer = setTimeout(() => {
-      setPage("loading");
-    }, 5000);
-
-    // Clear timer if component unmounts before 5 seconds
-    return () => clearTimeout(timer);
   }, []);
 
-  console.log(page);
+ 
 
   const userData = useUserLogin(initData);
 
-  // If page is 'intro', show Intro page
-  if (page === "welcome" && !userData) {
-    return <Welcome />;
-  } else if (page === "loading" && !userData) {
-    return <Loading />;
-  }
+if(!userData){
+  return <Loading />
+}
 
   return (
     <ChakraProvider theme={customTheme}>
