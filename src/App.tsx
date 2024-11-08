@@ -21,14 +21,13 @@ function App() {
    const userData = useUserLogin(initData);
 
    useEffect(() => {
-     WebApp.ready();
      const data = WebApp.initData;
      setInitData(data);
 
      // Show Intro page for 5 seconds, then switch to Loading
      const timer = setTimeout(() => {
        setPage("loading");
-     }, 2000);
+     }, 5000);
 
      // Clear timer if component unmounts before 5 seconds
      return () => clearTimeout(timer);
