@@ -28,20 +28,17 @@ function App() {
      // Show Intro page for 5 seconds, then switch to Loading
      const timer = setTimeout(() => {
        setPage("loading");
-     }, 5000);
+     }, 2000);
 
      // Clear timer if component unmounts before 5 seconds
      return () => clearTimeout(timer);
    }, []);
 
    // If page is 'intro', show Intro page
-   if (page === "welcome") {
+   if (page === "welcome" && !userData) {
      return <Welcome />;
-   }
-
-   // If page is 'loading' and user data is not yet loaded, show Loading page
-   if (!userData) {
-     return <Loading />;
+   }else if(page === "loading" && !userData){
+    return <Loading />
    }
 
   return (
