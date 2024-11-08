@@ -9,7 +9,39 @@ import { CharacterProvider } from "./components/CharacterContext";
 import customTheme from "./components/theme"
 import Shop from "./pages/Shop";
 import Team from "./pages/Team";
+import WebApp from "@twa-dev/sdk";
+import { useEffect, useState } from "react";
+import { useUserLogin } from "./hooks/useAuth";
+import Loading from "./pages/Loading";
+import Intro from "./pages/Intro";
 function App() {
+   const [initData, setInitData] = useState("");
+   const [page, setPage] = useState("intro"); // State to manage current page ('intro', 'loading', or 'home')
+   const userData = useUserLogin(initData);
+
+   useEffect(() => {
+     WebApp.ready();
+     const data = WebApp.initData;
+     setInitData(data);
+
+     // Show Intro page for 5 seconds, then switch to Loading
+     const timer = setTimeout(() => {
+       setPage("loading");
+     }, 5000);
+
+     // Clear timer if component unmounts before 5 seconds
+     return () => clearTimeout(timer);
+   }, []);
+
+   // If page is 'intro', show Intro page
+   if (page === "intro") {
+     return <Intro />;
+   }
+
+   // If page is 'loading' and user data is not yet loaded, show Loading page
+   if (!userData) {
+     return <Loading />;
+   }
 
   return (
     <ChakraProvider theme={customTheme}>
