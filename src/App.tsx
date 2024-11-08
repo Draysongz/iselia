@@ -18,7 +18,7 @@ import Welcome from "./pages/Welcome";
 function App() {
    const [initData, setInitData] = useState("");
    const [page, setPage] = useState("welcome"); // State to manage current page ('intro', 'loading', or 'home')
-   const userData = useUserLogin(initData);
+   
 
    useEffect(() => {
      const data = WebApp.initData;
@@ -41,6 +41,8 @@ function App() {
    }
 
    console.log(page)
+
+   const userData = useUserLogin(initData);
 
   return (
     <ChakraProvider theme={customTheme}>
