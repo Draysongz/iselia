@@ -55,13 +55,6 @@ const NavigationBar: React.FC = () => {
           to="/"
         />
         <NavItem
-          iconSrc="./NavIcons/Quests.png"
-          label="Quest"
-          to="/quests"
-          isActive={location.pathname === "/quests"}
-          
-        />
-        <NavItem
           iconSrc="./NavIcons/Characters.png"
           label="Characters"
           to="/characters"
