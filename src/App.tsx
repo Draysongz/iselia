@@ -13,7 +13,7 @@ import WebApp from "@twa-dev/sdk";
 import { useEffect, useState } from "react";
 import { useUserLogin } from "./hooks/useAuth";
 import Loading from "./pages/Loading";
-import Welcome from "./pages/Welcome";
+
 
 function App() {
   const [initData, setInitData] = useState("");
