@@ -69,15 +69,15 @@ const NavigationBar: React.FC = () => {
         />
         <NavItem
           iconSrc="./NavIcons/Community.png"
-          label="Community"
-          to="/community"
-          isActive={location.pathname === "/community"}
+          label="Team"
+          to="/team"
+          isActive={location.pathname === "/team"}
         />
         <NavItem
           iconSrc="./NavIcons/Settings.png"
-          label="Settings"
-          to="/settings"
-          isActive={location.pathname === "/settings"}
+          label="Shop"
+          to="/shop"
+          isActive={location.pathname === "/shop"}
         />
       </Box>
     </nav>
