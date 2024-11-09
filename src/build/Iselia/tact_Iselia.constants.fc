@@ -1,0 +1,64 @@
+;; String "dump("in array psuh creating account...")"
+slice __gen_slice_string_d2533564a357dc35c78795905ef66b4aba405a28061b399edee8f69c0ff447e4() asm """
+    B{b5ee9c7241010101002b00005264756d702822696e2061727261792070737568206372656174696e67206163636f756e742e2e2e2229a9d6002f} B>boc <s PUSHSLICE
+""";
+
+;; String "in array psuh creating account..."
+slice __gen_slice_string_21c4c193f783a95c46e50c18045986c56d2d68f2e20a609236df38c094931e42() asm """
+    B{b5ee9c72410101010023000042696e2061727261792070737568206372656174696e67206163636f756e742e2e2e1c0a0533} B>boc <s PUSHSLICE
+""";
+
+;; String "dump("done creating account, updating array length")"
+slice __gen_slice_string_7fa7af7174ef01b61c5a1882a738bd45b5b4f6d138fbe613c5365a0e0cae10b3() asm """
+    B{b5ee9c7241010101003600006864756d702822646f6e65206372656174696e67206163636f756e742c207570646174696e67206172726179206c656e677468222980fdb9c8} B>boc <s PUSHSLICE
+""";
+
+;; String "done creating account, updating array length"
+slice __gen_slice_string_377705605c178f75fdd700a0ff8248a50ea6a07411008146a7fb916b62f66da2() asm """
+    B{b5ee9c7241010101002e000058646f6e65206372656174696e67206163636f756e742c207570646174696e67206172726179206c656e67746861e5756c} B>boc <s PUSHSLICE
+""";
+
+;; String "dump("done updating array length")"
+slice __gen_slice_string_d6866bf80bf7d0d75df915959222d6d3a9d0fdc97e007c13dde8171102e449ad() asm """
+    B{b5ee9c7241010101002400004464756d702822646f6e65207570646174696e67206172726179206c656e67746822298c953b69} B>boc <s PUSHSLICE
+""";
+
+;; String "done updating array length"
+slice __gen_slice_string_19264213eacc3fb8ced9491cb35bd820f984bdacac4ef3733d0feadddb46f787() asm """
+    B{b5ee9c7241010101001c000034646f6e65207570646174696e67206172726179206c656e677468a2f5f3e8} B>boc <s PUSHSLICE
+""";
+
+;; String "dump("empty message received")"
+slice __gen_slice_string_bd7c6808bca64d7cacd763a1ea33c08f74a9b303c4aa9686a90607ff4cce59ab() asm """
+    B{b5ee9c7241010101002000003c64756d702822656d707479206d6573736167652072656365697665642229f637db04} B>boc <s PUSHSLICE
+""";
+
+;; String "empty message received"
+slice __gen_slice_string_d4ac4197f9a7d50c59c39ad8548801590f72ffb996b0259d0db3f081129496b6() asm """
+    B{b5ee9c7241010101001800002c656d707479206d657373616765207265636569766564075bad71} B>boc <s PUSHSLICE
+""";
+
+;; String "dump(ctx.value)"
+slice __gen_slice_string_dbe5b4cb15654458564a939234c54475944f887108d46108ca0b7ed103e42985() asm """
+    B{b5ee9c7241010101001100001e64756d70286374782e76616c7565295955155e} B>boc <s PUSHSLICE
+""";
+
+;; String "dump("in the withdraw function")"
+slice __gen_slice_string_a6e4667758cc86a1764b786eee1f4c482512b15becd2bd1b670ad620a5e7df47() asm """
+    B{b5ee9c7241010101002200004064756d702822696e207468652077697468647261772066756e6374696f6e222950d2fa57} B>boc <s PUSHSLICE
+""";
+
+;; String "in the withdraw function"
+slice __gen_slice_string_31b74ad2f63df3db90e1b1625ed239bbdaa025ee00cc74d36fe0efa994430df4() asm """
+    B{b5ee9c7241010101001a000030696e207468652077697468647261772066756e6374696f6e2072633d} B>boc <s PUSHSLICE
+""";
+
+;; String "dump("first requirement done")"
+slice __gen_slice_string_ecb4241ce2ba2041bc56c69415dc7e9d48149f32e9576bda8d9dc79555d9b995() asm """
+    B{b5ee9c7241010101002000003c64756d702822666972737420726571756972656d656e7420646f6e652229f40a5662} B>boc <s PUSHSLICE
+""";
+
+;; String "first requirement done"
+slice __gen_slice_string_55434e5cd50d6bc7b74fdfb60fe3e987a6597ab82c89cda987d6e713e59c555a() asm """
+    B{b5ee9c7241010101001800002c666972737420726571756972656d656e7420646f6e6544a46371} B>boc <s PUSHSLICE
+""";

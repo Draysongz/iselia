@@ -1,9 +1,11 @@
 import { Box, Flex, Text, Image, Progress } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
 import { useUser } from "../context/context";
+import useCharacter from "../hooks/useCharacter";
+import { useUserAPI } from "../hooks/useUserApi";
 
 // interface ContentData {
 //   bgImage: string;
@@ -20,23 +22,24 @@ interface Monster {
   image: string;
 }
 
-interface PlayerProgress {
-  coins: number;
-  questsCompleted: number;
-  monstersKilled: number;
-  gemstone: number,
-}
 
 export default function Home() {
-  const location = useLocation();
-  const {user} = useUser()
+  // const location = useLocation();
+  const { user, character } = useUser();
+  const { updateUserProfile } = useUserAPI(user?.telegramId!);
+  const { fetchUserCharacters } = useCharacter(user?.id!);
+
+  useEffect(() => {
+    fetchUserCharacters();
+  }, [user]);
 
   // const { selectedContent } = location.state || {};
-  const backgroundImage = location.state?.bgImage || "";
 
   const [points, setPoints] = useState(0);
-  const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>([]);
-  const [damageValues] = useState([20, 65, 45]); // Array of damage values
+  const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
+    []
+  );
+  const [damageValues, setDamageValues] = useState<number[]>([]); // Array of damage values
   const [characterProgress, setCharacterProgress] = useState(100); // Character's progress
   const [showGems, setShowGems] = useState(false); // To control gem display
   const [isTapping, setIsTapping] = useState(false); // Track if the player is tapping
@@ -49,24 +52,32 @@ export default function Home() {
     { name: "Monster 4", maxHp: 2000, image: "/Monsters/M4.png" },
   ];
 
-  const playerProgress :PlayerProgress ={
-    coins: 35000,
-    questsCompleted: 2,
-    monstersKilled: 500,
-    gemstone: 1,
-  }
-  
+  useEffect(() => {
+    if (character && Array.isArray(character)) {
+      const damage = character.map((char) => char.baseDamage || 0); // Fallback to 0 if baseDamage is undefined
+      setDamageValues(damage);
+    }
+  }, [character]);
+
+
+
   const [currentMonsterIndex, setCurrentMonsterIndex] = useState(0);
   const currentMonster = monsters[currentMonsterIndex];
   const [monsterProgress, setMonsterProgress] = useState(currentMonster.maxHp);
-  
+  const [regenRate, setRegenRate] = useState(100);
+  const [totalDamageDealt, setTotalDamageDealt] = useState(0);
+
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (monsterProgress > 0 && characterProgress > 0) {
       // Set tapping state to true
       setIsTapping(true);
-      
+
+      console.log(damageValues);
+
       // Randomly pick a damage value from the array
-      const damage = damageValues[Math.floor(Math.random() * damageValues.length)];
+      const damage = damageValues;
+      const totalDamage = damage.reduce((acc, curr) => acc + curr, 0);
+      setTotalDamageDealt((prev) => prev + totalDamage);
 
       const card = e.currentTarget;
       const rect = card.getBoundingClientRect();
@@ -79,10 +90,10 @@ export default function Home() {
         card.style.transform = "";
       }, 100);
 
-      setMonsterProgress(prev => Math.max(prev - damage, 0)); // Reduce monster's progress
-      setPoints(points + damage);
+      setMonsterProgress((prev) => Math.max(prev - totalDamage, 0)); // Reduce monster's progress
+      setPoints(points + totalDamage);
       setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
-      setCharacterProgress(prev => Math.max(prev - 2, 0)); // Reduce character progress by 2
+      setCharacterProgress((prev) => Math.max(prev - 2, 0)); // Reduce character progress by 2
     }
   };
 
@@ -100,6 +111,27 @@ export default function Home() {
       return () => clearInterval(interval);
     }
   }, [isTapping, characterProgress]);
+  // Initial regen rate for the first monster
+
+  // Update regen rate when a new monster is loaded
+  useEffect(() => {
+    setRegenRate((prev) => prev + currentMonsterIndex * 2); // Increase rate by 0.5 with each monster
+    setMonsterProgress(currentMonster.maxHp); // Reset monster HP
+  }, [currentMonsterIndex]);
+
+  // Regenerate monster HP over time, scaling the rate with each new monster
+  useEffect(() => {
+    if (monsterProgress === 0 && currentMonsterIndex < monsters.length - 1)
+      return;
+    const interval = setInterval(() => {
+      setMonsterProgress((prevProgress) =>
+        Math.min(prevProgress + regenRate, currentMonster.maxHp)
+      );
+    }, 200);
+
+    // Clear interval when component unmounts or new monster appears
+    return () => clearInterval(interval);
+  }, [regenRate, currentMonster]);
 
   // Track if the player is no longer tapping to stop progress decrement
   useEffect(() => {
@@ -112,14 +144,22 @@ export default function Home() {
 
   // Effect to handle monster defeat and transition to next monster
   useEffect(() => {
-    if (monsterProgress === 0 && currentMonsterIndex < monsters.length - 1) {
-      setShowGems(true);
-      setTimeout(() => {
-        setShowGems(false);
-        setCurrentMonsterIndex(prev => prev + 1);
-        setMonsterProgress(monsters[currentMonsterIndex + 1].maxHp);
-      }, 2000);
-    }
+    const monsterset = async () => {
+      if (monsterProgress === 0 && currentMonsterIndex < monsters.length - 1) {
+        if (!user) return;
+        const rewards = Math.floor(totalDamageDealt / 10);
+        await updateUserProfile({ coins: user.coins + rewards });
+        setShowGems(true);
+        setTimeout(() => {
+          setShowGems(false);
+          setCurrentMonsterIndex((prev) => prev + 1);
+          setMonsterProgress(monsters[currentMonsterIndex + 1].maxHp);
+          setTotalDamageDealt(0);
+        }, 2000);
+      }
+    };
+
+    monsterset();
   }, [monsterProgress, currentMonsterIndex]);
 
   return (
@@ -164,36 +204,11 @@ export default function Home() {
           >
             <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
               {" "}
-              {playerProgress.coins}{" "}
+              {user && user.coins}{" "}
             </Text>
             <Image src="/gems/1.png" w={"20px"} />
           </Flex>
-          <Flex
-            bg={"rgba(0, 0, 0, 0.3)"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            borderRadius={"5px"}
-            border={"3px solid black"}
-          >
-            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
-              {" "}
-              {playerProgress.gemstone}{" "}
-            </Text>
-            <Image src="/gems/6.png" w={"20px"} />
-          </Flex>
-          <Flex
-            bg={"rgba(0, 0, 0, 0.3)"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            borderRadius={"5px"}
-            border={"3px solid black"}
-          >
-            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
-              {" "}
-              {playerProgress.questsCompleted}{" "}
-            </Text>
-            <Image src="/gems/crown.png" w={"20px"} mt={-1} />
-          </Flex>
+         
         </Flex>
         {user && !user.isNewPlayer ? (
           <>
@@ -256,7 +271,8 @@ export default function Home() {
               direction={"column"}
               w={"100%"}
               h={{ base: "400px", sm: "600px" }}
-              mt={5}
+              mt={2}
+              gap={6}
               alignItems={"center"}
               pt={{ base: 3, sm: 10 }}
             >
@@ -269,8 +285,21 @@ export default function Home() {
                   mx={"auto"}
                 />
               </Box>
-              <Flex alignItems={"center"} gap={2} mt={{ base: 0, sm: 16 }}>
-                <Image src={backgroundImage} w={"65px"} />
+              <Flex
+                direction={character.length > 1 ? "column-reverse" : "row"}
+                alignItems={"center"}
+                gap={2}
+                mt={{ base: 0, sm: 16 }}
+              >
+                <Flex direction={"row"}>
+                  {character &&
+                    character.length > 0 &&
+                    character.map((char, index) => {
+                      return (
+                        <Image key={index} src={char.bgImage} w={"65px"} />
+                      );
+                    })}
+                </Flex>
                 <Progress
                   className="character"
                   value={characterProgress}

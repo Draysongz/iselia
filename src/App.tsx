@@ -15,6 +15,7 @@ import { useUserLogin } from "./hooks/useAuth";
 import Loading from "./pages/Loading";
 
 import { useUser } from "./context/context";
+import { useEffect } from "react";
 
 function App() {
   //  const [initData, setInitData] = useState("");
@@ -39,13 +40,11 @@ function App() {
    const {userData} = useUserLogin(initData);
 
 
-
-       if (userData != null) {
-        console.log(userData)
-         setUser(userData.user);
-         setToken(userData.token);
-         
-       }
+useEffect(()=>{
+  if(!userData) return ;
+ setUser(userData.user);
+ setToken(userData.token);
+},[userData])
 
 
 

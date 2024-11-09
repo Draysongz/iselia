@@ -1,0 +1,185 @@
+#pragma version =0.4.4;
+#pragma allow-post-modification;
+#pragma compute-asm-ltr;
+
+#include "tact_Iselia.headers.fc";
+#include "tact_Iselia.stdlib.fc";
+#include "tact_Iselia.constants.fc";
+#include "tact_Iselia.storage.fc";
+
+;;
+;; Contract Iselia functions
+;;
+
+(slice, cell, int, int) $Iselia$_contract_init(slice $admin) impure inline_ref {
+    var (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart)) = (null(), null(), 0, 0);
+    $self'adminAddress = $admin;
+    return ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart);
+}
+
+((slice, cell, int, int), ()) $Iselia$_fun_arrPush((slice, cell, int, int) $self, slice $address, int $balance) impure inline_ref {
+    var (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart)) = $self;
+    __tact_debug_str(__gen_slice_string_21c4c193f783a95c46e50c18045986c56d2d68f2e20a609236df38c094931e42(), __gen_slice_string_d2533564a357dc35c78795905ef66b4aba405a28061b399edee8f69c0ff447e4(), "File contracts/iselia.tact:19:9:");
+    $self'arr~__tact_dict_set_slice_int(267, $address, $balance, 1);
+    __tact_debug_str(__gen_slice_string_377705605c178f75fdd700a0ff8248a50ea6a07411008146a7fb916b62f66da2(), __gen_slice_string_7fa7af7174ef01b61c5a1882a738bd45b5b4f6d138fbe613c5365a0e0cae10b3(), "File contracts/iselia.tact:21:9:");
+    $self'arrLength = ($self'arrLength + 1);
+    __tact_debug_str(__gen_slice_string_19264213eacc3fb8ced9491cb35bd820f984bdacac4ef3733d0feadddb46f787(), __gen_slice_string_d6866bf80bf7d0d75df915959222d6d3a9d0fdc97e007c13dde8171102e449ad(), "File contracts/iselia.tact:23:9:");
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), ());
+}
+
+((slice, cell, int, int), int) $Iselia$_fun_contractBalance((slice, cell, int, int) $self) impure inline_ref {
+    var (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart)) = $self;
+    var $fresh$ret_0 = $global_myBalance();
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), $fresh$ret_0);
+}
+
+((slice, cell, int, int), slice) $Iselia$_fun_adminAddress((slice, cell, int, int) $self) impure inline_ref {
+    var (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart)) = $self;
+    var $fresh$ret_1 = $self'adminAddress;
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), $fresh$ret_1);
+}
+
+;;
+;; Receivers of a Contract Iselia
+;;
+
+(((slice, cell, int, int)), ()) %$Iselia$_internal_empty((slice, cell, int, int) $self) impure inline {
+    var ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart) = $self;
+    __tact_debug_str(__gen_slice_string_d4ac4197f9a7d50c59c39ad8548801590f72ffb996b0259d0db3f081129496b6(), __gen_slice_string_bd7c6808bca64d7cacd763a1ea33c08f74a9b303c4aa9686a90607ff4cce59ab(), "File contracts/iselia.tact:29:9:");
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), ());
+}
+
+(((slice, cell, int, int)), ()) $Iselia$_internal_binary_BuySpin((slice, cell, int, int) $self, (int) $msg) impure inline {
+    var ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart) = $self;
+    var ($msg'amount) = $msg;
+    var ($ctx'bounced, $ctx'sender, $ctx'value, $ctx'raw) = __tact_context_get();
+    __tact_debug_str(__tact_int_to_string($ctx'value), __gen_slice_string_dbe5b4cb15654458564a939234c54475944f887108d46108ca0b7ed103e42985(), "File contracts/iselia.tact:33:9:");
+    ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart)~$Iselia$_fun_arrPush(__tact_context_get_sender(), true);
+    $global_emit($SpinBuyEvent$_store_cell($SpinBuyEvent$_constructor_amount_sender($ctx'value, __tact_context_get_sender())));
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), ());
+}
+
+(((slice, cell, int, int)), ()) $Iselia$_internal_binary_ChangeAdmin((slice, cell, int, int) $self, (slice) $msg) impure inline {
+    var ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart) = $self;
+    var ($msg'newOwner) = $msg;
+    $self'adminAddress = $msg'newOwner;
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), ());
+}
+
+(((slice, cell, int, int)), ()) $Iselia$_internal_binary_Withdraw((slice, cell, int, int) $self, (int, slice) $msg) impure inline {
+    var ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart) = $self;
+    var ($msg'amount, $msg'recipient) = $msg;
+    __tact_debug_str(__gen_slice_string_31b74ad2f63df3db90e1b1625ed239bbdaa025ee00cc74d36fe0efa994430df4(), __gen_slice_string_a6e4667758cc86a1764b786eee1f4c482512b15becd2bd1b670ad620a5e7df47(), "File contracts/iselia.tact:43:9:");
+    throw_unless(62026, ( __tact_slice_eq_bits($self'adminAddress, __tact_context_get_sender()) ));
+    __tact_debug_str(__gen_slice_string_55434e5cd50d6bc7b74fdfb60fe3e987a6597ab82c89cda987d6e713e59c555a(), __gen_slice_string_ecb4241ce2ba2041bc56c69415dc7e9d48149f32e9576bda8d9dc79555d9b995(), "File contracts/iselia.tact:45:9:");
+    slice $recipient = $msg'recipient;
+    int $amount = $global_min($msg'amount, (($global_myBalance() - $Context$_get_value(__tact_context_get())) - 10000000));
+    throw_unless(54615, ($amount > 0));
+    $global_send($SendParameters$_constructor_to_bounce_value_mode(__tact_context_get_sender(), true, $amount, 66));
+    $global_emit($TransferEvent$_store_cell($TransferEvent$_constructor_amount_recipient($amount, $recipient)));
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), ());
+}
+
+(((slice, cell, int, int)), ()) $Iselia$_internal_binary_Deploy((slice, cell, int, int) $self, (int) $deploy) impure inline {
+    var ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart) = $self;
+    var ($deploy'queryId) = $deploy;
+    ($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart)~$Iselia$_fun_notify($DeployOk$_store_cell($DeployOk$_constructor_queryId($deploy'queryId)));
+    return (($self'adminAddress, $self'arr, $self'arrLength, $self'arrStart), ());
+}
+
+;;
+;; Get methods of a Contract Iselia
+;;
+
+_ %contractBalance() method_id(110221) {
+    var self = $Iselia$_contract_load();
+    var res = self~$Iselia$_fun_contractBalance();
+    return res;
+}
+
+_ %adminAddress() method_id(99735) {
+    var self = $Iselia$_contract_load();
+    var res = self~$Iselia$_fun_adminAddress();
+    return res;
+}
+
+_ lazy_deployment_completed() method_id {
+    return get_data().begin_parse().load_int(1);
+}
+
+;;
+;; Routing of a Contract Iselia
+;;
+
+((slice, cell, int, int), int) $Iselia$_contract_router_internal((slice, cell, int, int) self, int msg_bounced, slice in_msg) impure inline_ref {
+    ;; Handle bounced messages
+    if (msg_bounced) {
+        return (self, true);
+    }
+    
+    ;; Parse incoming message
+    int op = 0;
+    if (slice_bits(in_msg) >= 32) {
+        op = in_msg.preload_uint(32);
+    }
+    
+    
+    ;; Receive empty message
+    if ((op == 0) & (slice_bits(in_msg) <= 32)) {
+        self~%$Iselia$_internal_empty();
+        return (self, true);
+    }
+    
+    ;; Receive BuySpin message
+    if (op == 3479065657) {
+        var msg = in_msg~$BuySpin$_load();
+        self~$Iselia$_internal_binary_BuySpin(msg);
+        return (self, true);
+    }
+    
+    ;; Receive ChangeAdmin message
+    if (op == 636739454) {
+        var msg = in_msg~$ChangeAdmin$_load();
+        self~$Iselia$_internal_binary_ChangeAdmin(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Withdraw message
+    if (op == 2856211534) {
+        var msg = in_msg~$Withdraw$_load();
+        self~$Iselia$_internal_binary_Withdraw(msg);
+        return (self, true);
+    }
+    
+    ;; Receive Deploy message
+    if (op == 2490013878) {
+        var msg = in_msg~$Deploy$_load();
+        self~$Iselia$_internal_binary_Deploy(msg);
+        return (self, true);
+    }
+    
+    return (self, false);
+}
+
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) impure {
+    
+    ;; Context
+    var cs = in_msg_cell.begin_parse();
+    var msg_flags = cs~load_uint(4);
+    var msg_bounced = -(msg_flags & 1);
+    slice msg_sender_addr = __tact_verify_address(cs~load_msg_addr());
+    __tact_context = (msg_bounced, msg_sender_addr, msg_value, cs);
+    __tact_context_sender = msg_sender_addr;
+    
+    ;; Load contract data
+    var self = $Iselia$_contract_load();
+    
+    ;; Handle operation
+    int handled = self~$Iselia$_contract_router_internal(msg_bounced, in_msg);
+    
+    ;; Throw if not handled
+    throw_unless(130, handled);
+    
+    ;; Persist state
+    $Iselia$_contract_store(self);
+}

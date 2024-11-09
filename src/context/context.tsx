@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { Character } from "../hooks/types";
 
 type User = {
   id: string;
@@ -26,22 +27,7 @@ type Referral = {
   createdAt: Date;
 };
 
-type Character = {
-  id?: string;
-  name: string;
-  bg?: string;
-  title: string;
-  bgImage?: string;
-  description?: string;
-  isUnlocked?: boolean;
-  txtImage?: string;
-  unlockCondition?: string;
-  baseDamage: number;
-  upgradeLevel?: number;
-  price?: number;
-  isStarter?: boolean;
-  createdAt?: Date;
-};
+
 
 
 type Inventory = {
@@ -79,6 +65,8 @@ type UserContextType = {
   token: string | null;
   setToken: (token: string) => void;
   clearUser: () => void;
+  character: Character[],
+  setCharacter: (character: Character[])=>void
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -86,11 +74,16 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState("")
+  const [character, setCharacter]= useState<Character[]>([])
 
   const clearUser = () => setUser(null); // Function to clear user data
 
+  useEffect(()=>{
+    console.log("new user change", user)
+  },[user])
+
   return (
-    <UserContext.Provider value={{ user, setUser, clearUser, token, setToken }}>
+    <UserContext.Provider value={{ user, setUser, clearUser, token, setToken, character, setCharacter }}>
       {children}
     </UserContext.Provider>
   );

@@ -9,7 +9,7 @@ import { useUser } from '../context/context';
 
 const useCharacter = (userId: string) => {
   const [characters, setCharacters] = useState<Character[]>([]);
-  const {token} = useUser()
+  const {token, setCharacter} = useUser()
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,6 +30,27 @@ const useCharacter = (userId: string) => {
       const axiosError = err as AxiosError;
       console.error('Error fetching characters:', axiosError);
       setError('Failed to fetch characters');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUserCharacters = async (): Promise<void> => {
+    setLoading(true);
+    try {
+      const response = await axios.get<Character[]>(`${BaseUrl}/characters/${userId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": true,
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setCharacter(response.data); // Set fetched characters to state
+      setError(null); // Clear previous errors
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      console.error('Error fetching user characters:', axiosError);
+      setError('Failed to fetch user characters');
     } finally {
       setLoading(false);
     }
@@ -60,6 +81,7 @@ const useCharacter = (userId: string) => {
     error,
     fetchCharacters,
     assignCharacterToUser,
+    fetchUserCharacters
   };
 };
 

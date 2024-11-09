@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useUser } from "../context/context";
+import { Character } from "./types";
 
 
 // Define the shape of the user object (you can extend this as needed)
@@ -28,22 +29,8 @@ type Referral = {
   createdAt: Date;
 };
 
-type Character = {
-  id?: string;
-  name: string;
-  title: string;
-  bg?: string;
-  bgImage?: string;
-  description?: string;
-  isUnlocked?: boolean;
-  txtImage?: string;
-  unlockCondition?: string;
-  baseDamage: number;
-  upgradeLevel?: number;
-  price?: number;
-  isStarter?: boolean;
-  createdAt?: Date;
-};
+
+
 
 type Inventory = {
   id: string;
@@ -110,6 +97,7 @@ export const useUserAPI = (userId: string | null) => {
       });
       setUser(response.data);
       setError(null);
+      
     } catch (err) {
       setError("Failed to fetch user profile");
     } finally {

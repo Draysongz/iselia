@@ -10,79 +10,110 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  useToast,
 } from "@chakra-ui/react";
 import NavigationBar from "../components/NavigationBar";
 import { TonConnectButton } from "@tonconnect/ui-react";
+import { useUser } from "../context/context";
+import { useRoyal } from "../hooks/useIselia";
+import { useTonConnect } from "../hooks/useTonConnect";
+import { useUserAPI } from "../hooks/useUserApi";
 
 const Boost = [
-    {
-        name: "ENERGY REFILL",
-        image: "/Icons/energy.png",
-        coin: "",
-        notice: "",
-        coinWidth: "",
-        btnTxt: "Free(2)"
-    },
-    {
-        name: "ENERGY UPGRADE",
-        image: "/Icons/up.png",
-        coin: "/gems/1.png",
-        notice: "",
-        coinWidth: "30px",
-        btnTxt: "25"
-    },
-    {
-        name: "DAMAGE MULTIPLIER",
-        image: "/gems/1.png",
-        coin: "/gems/7.png",
-        notice: "2 available",
-        coinWidth: "40px",
-        btnTxt: "25"
-    },
-]
+  {
+    name: "ENERGY REFILL",
+    image: "/Icons/energy.png",
+    coin: "",
+    notice: "",
+    coinWidth: "",
+    btnTxt: "Free(2)",
+  },
+  {
+    name: "ENERGY UPGRADE",
+    image: "/Icons/up.png",
+    coin: "/gems/1.png",
+    notice: "",
+    coinWidth: "30px",
+    btnTxt: "25",
+  },
+  {
+    name: "DAMAGE MULTIPLIER",
+    image: "/gems/1.png",
+    coin: "/gems/7.png",
+    notice: "2 available",
+    coinWidth: "40px",
+    btnTxt: "25",
+  },
+];
 
 const Chest = [
-    {
-        name: 'DAILY REWARDS',
-        image: "/Icons/chest/1.png",
-        btnTxt: "CLAIM",
-    },
-    {
-        name: 'BASE TREASURE',
-        image: "/Icons/chest/3.png",
-        btnTxt: "LOCKED",
-    },
-    {
-        name: 'PREMIUM TREASURE',
-        image: "/Icons/chest/2.png",
-        btnTxt: "LOCKED",
-    },
-    {
-        name: 'BASE EQUIPMENT',
-        image: "/gems/1.png",
-        btnTxt: "LOCKED",
-    },
-    {
-        name: 'PREMIUM EQUIPMENT',
-        image: "/gems/1.png",
-        btnTxt: "LOCKED",
-    },
-]
-
-interface PlayerProgress {
-  coins: number;
-  questsCompleted: number;
-  monstersKilled: number;
-  gemstone: number;
-}
+  {
+    name: "DAILY REWARDS",
+    image: "/Icons/chest/1.png",
+    btnTxt: "CLAIM",
+  },
+  {
+    name: "BASE TREASURE",
+    image: "/Icons/chest/3.png",
+    btnTxt: "2 TON",
+  },
+  {
+    name: "PREMIUM TREASURE",
+    image: "/Icons/chest/2.png",
+    btnTxt: "2 TON",
+  },
+  // {
+  //   name: "BASE EQUIPMENT",
+  //   image: "/gems/1.png",
+  //   btnTxt: "2 TON",
+  // },
+  // {
+  //   name: "PREMIUM EQUIPMENT",
+  //   image: "/gems/1.png",
+  //   btnTxt: "2 TON",
+  // },
+];
 
 export default function Shop() {
-  const playerProgress : PlayerProgress= {
-    coins: 35000,
-    questsCompleted: 2,
-    monstersKilled: 500,
-    gemstone: 1,
-  }
+  const { user } = useUser();
+  const { updateUserProfile } = useUserAPI(user?.telegramId!);
+  const { Deposit } = useRoyal();
+  const { connected } = useTonConnect();
+  const toast = useToast();
+
+  const handlePayment = async (amount: number, chest: any) => {
+    console.log("amount to pay", amount);
+    if (!user) return;
+    let randomInt;
+    if (chest.name === "BASE TREASURE") {
+      randomInt = Math.floor(Math.random() * 50000) || 0;
+    } else if (chest.name === "PREMIUM TREASURE") {
+      randomInt = Math.floor(Math.random() * 100000) || 0;
+    }
+    if (!connected) {
+      toast({
+        title: "Please connect wallet",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    try {
+      const dep = await Deposit(amount);
+      console.log("amount to pay", dep);
+      await updateUserProfile({ coins: user.coins + randomInt! });
+      toast({
+        title: "Deposit successful",
+        description: `You have won ${randomInt} coins `,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Box
@@ -128,14 +159,7 @@ export default function Shop() {
           opacity={"70%"}
         />
 
-        <Flex
-          gap={3}
-          w={"100%"}
-          justifyContent={"center"}
-          p={2}
-          pb={5}
-          mb={5}
-        >
+        <Flex gap={3} w={"100%"} justifyContent={"center"} p={2} pb={5} mb={5}>
           <Box alignSelf={"start"}>
             <TonConnectButton />
           </Box>
@@ -149,23 +173,9 @@ export default function Shop() {
           >
             <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 12px"}>
               {" "}
-              {playerProgress.coins}{" "}
+              {user && user.coins}{" "}
             </Text>
             <Image src="/gems/1.png" w={"20px"} />
-          </Flex>
-          <Flex
-            // w={"70px"}
-            bg={"rgba(0, 0, 0, 0.3)"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            borderRadius={"5px"}
-            border={"3px solid black"}
-          >
-            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 12px"}>
-              {" "}
-              {playerProgress.gemstone}{" "}
-            </Text>
-            <Image src="/gems/6.png" w={"20px"} />
           </Flex>
         </Flex>
         <Tabs width={"100%"} variant="unstyled">
@@ -455,7 +465,14 @@ export default function Shop() {
                                   border={"2px solid #0197f6"}
                                   borderRadius={"10px"}
                                   _hover={{ bg: "#800080" }}
-                                  isDisabled={index > 0}
+                                  onClick={() => {
+                                    if (
+                                      chest.name === "PREMIUM TREASURE" ||
+                                      chest.name === "BASE TREASURE"
+                                    ) {
+                                      handlePayment(2, chest);
+                                    }
+                                  }}
                                 >
                                   <Text
                                     color={"white"}

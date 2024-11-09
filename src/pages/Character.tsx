@@ -33,7 +33,7 @@ export interface Char {
 
 
 export default function Character() {
-  const {user} = useUser()
+  const {user, character} = useUser()
   const {updateUserProfile} = useUserAPI(user?.telegramId!)
   const {fetchCharacters, characters, assignCharacterToUser} = useCharacter(user?.id!)
 
@@ -48,11 +48,23 @@ export default function Character() {
   },[])
 
 
-  const handleImageClick = async (character: Char) => {
+  const handleImageClick = async (char: Char) => {
+    if(!char.isUnlocked) return ;
+    if(character && character.length > 0){
+      let owned = false
+      character.map((userchar)=>{
+       if(userchar.id === char.id){
+        owned =true
+       }
+      })
+      if(owned){
+        return;
+      }
+    }
     try {
-         await assignCharacterToUser(character.id)
+         await assignCharacterToUser(char.id)
          await  updateUserProfile({isNewPlayer: false})
-           setSelectedContent(character); 
+          setSelectedContent(char); 
     } catch (error) {
       console.log(error)
     }
