@@ -12,6 +12,7 @@ import {
   TabPanel,
 } from "@chakra-ui/react";
 import NavigationBar from "../components/NavigationBar";
+import { TonConnectButton } from "@tonconnect/ui-react";
 
 const Boost = [
     {
@@ -128,6 +129,7 @@ export default function Shop() {
         />
 
         <Flex gap={5} w={"100%"} justifyContent={"flex-end"} p={3} pb={5} mb={5}>
+          <TonConnectButton />
           <Flex
             // w={"70px"}
             bg={"rgba(0, 0, 0, 0.3)"}

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
+import { useUser } from "../context/context";
 
 // interface ContentData {
 //   bgImage: string;
@@ -28,6 +29,7 @@ interface PlayerProgress {
 
 export default function Home() {
   const location = useLocation();
+  const {user} = useUser()
 
   // const { selectedContent } = location.state || {};
   const backgroundImage = location.state?.bgImage || "";
@@ -152,56 +154,122 @@ export default function Home() {
         pt={5}
         zIndex={0}
       >
-        
-        <Flex gap={5} w={'100%'} justifyContent={"flex-end"} p={3} >
-          <Flex bg={'rgba(0, 0, 0, 0.3)'} alignItems={'center'} justifyContent={'space-between'} borderRadius={'5px'} border={'3px solid black'}>
-            <Text mx={'auto'} fontSize={'12px'} fontWeight={800} p={'5px 20px'}> {playerProgress.coins} </Text>
-            <Image src="/gems/1.png" w={'20px'}/>
+        <Flex gap={5} w={"100%"} justifyContent={"flex-end"} p={3}>
+          <Flex
+            bg={"rgba(0, 0, 0, 0.3)"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            borderRadius={"5px"}
+            border={"3px solid black"}
+          >
+            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
+              {" "}
+              {playerProgress.coins}{" "}
+            </Text>
+            <Image src="/gems/1.png" w={"20px"} />
           </Flex>
-          <Flex bg={'rgba(0, 0, 0, 0.3)'} alignItems={'center'} justifyContent={'space-between'} borderRadius={'5px'} border={'3px solid black'}>
-            <Text mx={'auto'} fontSize={'12px'} fontWeight={800} p={'5px 20px'}> {playerProgress.gemstone} </Text>
-            <Image src="/gems/6.png" w={'20px'}/>
+          <Flex
+            bg={"rgba(0, 0, 0, 0.3)"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            borderRadius={"5px"}
+            border={"3px solid black"}
+          >
+            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
+              {" "}
+              {playerProgress.gemstone}{" "}
+            </Text>
+            <Image src="/gems/6.png" w={"20px"} />
           </Flex>
-          <Flex bg={'rgba(0, 0, 0, 0.3)'} alignItems={'center'} justifyContent={'space-between'} borderRadius={'5px'} border={'3px solid black'}>
-            <Text mx={'auto'} fontSize={'12px'} fontWeight={800} p={'5px 20px'}> {playerProgress.questsCompleted} </Text>
-            <Image src="/gems/crown.png" w={'20px'} mt={-1}/>
+          <Flex
+            bg={"rgba(0, 0, 0, 0.3)"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            borderRadius={"5px"}
+            border={"3px solid black"}
+          >
+            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
+              {" "}
+              {playerProgress.questsCompleted}{" "}
+            </Text>
+            <Image src="/gems/crown.png" w={"20px"} mt={-1} />
           </Flex>
         </Flex>
-        {backgroundImage ? (
+        {user && !user.isNewPlayer ? (
           <>
-            <Text w={'40%'} h={'33px'} fontSize={'13px'} fontWeight={500} textAlign={'center'} color={'#f7f7ff'} border={'1px solid #0197f6'} bg={'#8000804D'} borderRadius={'10px'} alignContent={'center'}>
+            <Text
+              w={"40%"}
+              h={"33px"}
+              fontSize={"13px"}
+              fontWeight={500}
+              textAlign={"center"}
+              color={"#f7f7ff"}
+              border={"1px solid #0197f6"}
+              bg={"#8000804D"}
+              borderRadius={"10px"}
+              alignContent={"center"}
+            >
               {/* {selectedContent.name} - {selectedContent.title} */}
             </Text>
             <Flex w={"90%"} mt={10}>
-              <Flex alignItems={"center"} gap={2} mt={-3} mx={'auto'} w={'100%'}>
+              <Flex
+                alignItems={"center"}
+                gap={2}
+                mt={-3}
+                mx={"auto"}
+                w={"100%"}
+              >
                 <Progress
                   className="monster"
                   value={(monsterProgress / currentMonster.maxHp) * 100} // Display as percentage
                   size="sm"
                   bg={"transparent"}
                   border={"3px solid #f7f7ff "}
-                  borderRadius={'5px'}
+                  borderRadius={"5px"}
                   w={"100%"}
                   h={"29px"}
-                  position={'relative'}
+                  position={"relative"}
                   sx={{
                     "& > div": {
                       background: "#800080",
                     },
                   }}
                 />
-                <Text display={'flex'} position={'absolute'} w={'88%'} justifyContent={'space-between'} ml={1} alignItems={'center'} p={'5px'}>
+                <Text
+                  display={"flex"}
+                  position={"absolute"}
+                  w={"88%"}
+                  justifyContent={"space-between"}
+                  ml={1}
+                  alignItems={"center"}
+                  p={"5px"}
+                >
                   {currentMonster.name}
-                  <span className="text-2xl font-extrabold">{monsterProgress} HP</span>
+                  <span className="text-2xl font-extrabold">
+                    {monsterProgress} HP
+                  </span>
                 </Text>
               </Flex>
             </Flex>
 
-            <Flex direction={'column'} w={'100%'} h={{base: '400px', sm: "600px"}} mt={5} alignItems={'center'} pt={{base: 3, sm: 10}}>
-              <Box w={'100%'} onClick={handleCardClick}>
-                <Image src={currentMonster.image} h={{base:'250px', sm: "320px"}} className="scale" transition="transform 0.2s" mx={'auto'} />
+            <Flex
+              direction={"column"}
+              w={"100%"}
+              h={{ base: "400px", sm: "600px" }}
+              mt={5}
+              alignItems={"center"}
+              pt={{ base: 3, sm: 10 }}
+            >
+              <Box w={"100%"} onClick={handleCardClick}>
+                <Image
+                  src={currentMonster.image}
+                  h={{ base: "250px", sm: "320px" }}
+                  className="scale"
+                  transition="transform 0.2s"
+                  mx={"auto"}
+                />
               </Box>
-              <Flex alignItems={"center"} gap={2} mt={{base: 0, sm: 16}}>
+              <Flex alignItems={"center"} gap={2} mt={{ base: 0, sm: 16 }}>
                 <Image src={backgroundImage} w={"65px"} />
                 <Progress
                   className="character"
@@ -222,22 +290,67 @@ export default function Home() {
           </>
         ) : (
           <>
-          <Image src="/Labels/WOItxt.png" mt={3}/>
-            <Text w={'40%'} h={'33px'} fontSize={'13px'} fontWeight={500} textAlign={'center'} color={'#f7f7ff'} border={'1px solid #0197f6'} bg={'#8000804D'} borderRadius={'10px'}  alignContent={'center'}>
-              <Link to={'/characters'}>
-              Select a Character
-              </Link>
+            <Image src="/Labels/WOItxt.png" mt={3} />
+            <Text
+              w={"40%"}
+              h={"33px"}
+              fontSize={"13px"}
+              fontWeight={500}
+              textAlign={"center"}
+              color={"#f7f7ff"}
+              border={"1px solid #0197f6"}
+              bg={"#8000804D"}
+              borderRadius={"10px"}
+              alignContent={"center"}
+            >
+              <Link to={"/characters"}>Select a Character</Link>
             </Text>
-            <Flex w={"90%"} justifyContent={'space-between'} mt={10}>
-              <Box w={'120px'} h={'78.96px'} borderRadius={'10px'} bg={'#8000804D'} border={'1px solid #0197f6'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} gap={'5px'} p={'10px'}>
-                <Image src="/Icons/Calender.png" w={'35px'} h={'40.96px'}/>
-                <Text fontSize={'10px'} fontWeight={500} lineHeight={'13.27px'} textAlign={'center'} color={'#f7f7ff'}>
+            <Flex w={"90%"} justifyContent={"space-between"} mt={10}>
+              <Box
+                w={"120px"}
+                h={"78.96px"}
+                borderRadius={"10px"}
+                bg={"#8000804D"}
+                border={"1px solid #0197f6"}
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                gap={"5px"}
+                p={"10px"}
+              >
+                <Image src="/Icons/Calender.png" w={"35px"} h={"40.96px"} />
+                <Text
+                  fontSize={"10px"}
+                  fontWeight={500}
+                  lineHeight={"13.27px"}
+                  textAlign={"center"}
+                  color={"#f7f7ff"}
+                >
                   Claim Daily Reward
                 </Text>
               </Box>
-              <Box w={'120px'} h={'78.96px'} borderRadius={'10px'} bg={'#8000804D'} border={'1px solid #0197f6'} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'} gap={'5px'} p={'10px'}>
-                <Image src="/Icons/Calender.png" w={'35px'} h={'40.96px'}/>
-                <Text fontSize={'10px'} fontWeight={500} lineHeight={'13.27px'} textAlign={'center'} color={'#f7f7ff'}>
+              <Box
+                w={"120px"}
+                h={"78.96px"}
+                borderRadius={"10px"}
+                bg={"#8000804D"}
+                border={"1px solid #0197f6"}
+                display={"flex"}
+                flexDirection={"column"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                gap={"5px"}
+                p={"10px"}
+              >
+                <Image src="/Icons/Calender.png" w={"35px"} h={"40.96px"} />
+                <Text
+                  fontSize={"10px"}
+                  fontWeight={500}
+                  lineHeight={"13.27px"}
+                  textAlign={"center"}
+                  color={"#f7f7ff"}
+                >
                   02:30:45
                 </Text>
               </Box>
@@ -253,38 +366,37 @@ export default function Home() {
           style={{
             top: `${click.y - 42}px`,
             left: `${click.x - 28}px`,
-            animation: "float 1s ease-out"
+            animation: "float 1s ease-out",
           }}
           onAnimationEnd={() => handleAnimationEnd(click.id)}
         >
           🛡️⚔️
-           <Text>
-           {damageValues[Math.floor(Math.random() * damageValues.length)]}
-           </Text>
-           <Text>
-           {damageValues[Math.floor(Math.random() * damageValues.length)]}
-           </Text>
-           <Text>
-           {damageValues[Math.floor(Math.random() * damageValues.length)]}
-           </Text>
+          <Text>
+            {damageValues[Math.floor(Math.random() * damageValues.length)]}
+          </Text>
+          <Text>
+            {damageValues[Math.floor(Math.random() * damageValues.length)]}
+          </Text>
+          <Text>
+            {damageValues[Math.floor(Math.random() * damageValues.length)]}
+          </Text>
         </div>
       ))}
 
-{showGems && (
-  <div className="gems-container">
-    {Array.from({ length: 5 }).map((_, i) => (
-      <div
-        key={i}
-        className={`gems-falling-animation gemstone-${Math.floor(Math.random() * 4) + 1}`}
-        style={{ left: `${Math.random() * 100}vw` }}
-      />
-    ))}
-  </div>
-)}
+      {showGems && (
+        <div className="gems-container">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className={`gems-falling-animation gemstone-${
+                Math.floor(Math.random() * 4) + 1
+              }`}
+              style={{ left: `${Math.random() * 100}vw` }}
+            />
+          ))}
+        </div>
+      )}
 
-
-
-      
       <NavigationBar />
     </Box>
   );

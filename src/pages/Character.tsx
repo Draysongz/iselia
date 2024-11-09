@@ -1,110 +1,68 @@
 import { Box, Flex, Text, Image, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { useCharacter } from "../components/CharacterContext";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar";
+import { useUser } from "../context/context";
+import useCharacter from "../hooks/useCharacter";
+import { useUserAPI } from "../hooks/useUserApi";
 
-// Define a type for the content data
-interface ContentData {
-  bgImage: string;
-  bg: string;
+
+
+export interface Char {
+  id: string;
   name: string;
-  title: string;
-  description: string;
-  txtImage: string;
-  unlockCondition: string;
-  isUnlocked: (progress: PlayerProgress) => boolean;
+  baseDamage: number;
+  upgradeLevel: number;
+  price: number;
+  bg?: string;
+  bgImage?: string;
+  description?: string;
+  isUnlocked?: boolean;
+  title?: string;
+  txtImage?: string;
+  unlockCondition?: string;
+  isStarter: boolean;
 }
 
-interface PlayerProgress {
-  coins: number;
-  questsCompleted: number;
-  monstersKilled: number;
-  gemstone: number;
-}
+
+
+
 
 // Array to store content for each image
-const contentData: ContentData[] = [
-  {
-    bgImage: "/girls/small/1.png",
-    bg: "/girls/2.png",
-    name: "Liarel",
-    txtImage: "/Labels/Liarel.png",
-    title: "The Enchantress",
-    description:
-      "Lirael hails from the mystical Forest of Eldoria, where she trained under the ancient sorcerers. Known for her intelligence and wit, she seeks to uncover the lost spells of Iselia.",
-    unlockCondition: "Get 30,000 coins to unlock",
-    isUnlocked: (progress) => progress.coins >= 30000,
-  },
-  {
-    bgImage: "/girls/small/2.png",
-    bg: "/girls/6.png",
-    name: "Korin",
-    txtImage: "/Labels/Korin.png",
-    title: "The Rogue",
-    description:
-      "Once a street urchin in the bustling city of Valeria, Korin learned to survive by stealing and outsmarting those who sought to exploit him. He now uses his skills to fight against oppression.",
-    unlockCondition: "Get 3 Quests to unlock",
-    isUnlocked: (progress) => progress.questsCompleted >= 3,
-  },
-  {
-    bgImage: "/girls/small/3.png",
-    bg: "/girls/4.png",
-    name: "Thalia",
-    txtImage: "/Labels/Thalia.png",
-    title: "The Warrior",
-    description:
-      "A member of the renowned Ironclad Clan, Thalia fights to protect her homeland from invading forces. She carries the weight of her clan's legacy and strives to prove herself as a worthy leader.",
-    unlockCondition: "Get 30,000 coins to unlock",
-    isUnlocked: (progress) => progress.monstersKilled >= 1000,
-  },
-  {
-    bgImage: "/girls/small/4.png",
-    bg: "/girls/5.png",
-    name: "Zephyr",
-    txtImage: "/Labels/Zephyr.png",
-    title: "The Trickster",
-    description:
-      "Zephyr grew up in the bustling markets of Iselia, where she learned the art of trickery and illusion. She uses her talents to entertain and confuse, often getting into trouble for her pranks.",
-    unlockCondition: "Get 100,000 coins to unlock",
-    isUnlocked: (progress) => progress.coins >= 100000,
-  },
-];
+
 
 export default function Character() {
+  const {user} = useUser()
+  const {updateUserProfile} = useUserAPI(user?.telegramId!)
+  const {fetchCharacters, characters, assignCharacterToUser} = useCharacter(user?.id!)
+
 
   const [selectedContent, setSelectedContent] = useState<any | null>(null);
   const navigate = useNavigate();
   const [showCharacterDetail, setShowCharacterDetail] = useState(false);
+ 
 
-  const playerProgress : PlayerProgress = {
-    coins: 35000,
-    questsCompleted: 2,
-    monstersKilled: 500,
-    gemstone: 1,
-  }
+  useEffect(()=>{
+    fetchCharacters()
+  },[])
 
-  const handleImageClick = (index: number) => {
-    if (contentData[index].isUnlocked(playerProgress)) {
-       const newContent = {
-        bg: contentData[index].bg,
-        bgImage: contentData[index].bgImage,
-        description: contentData[index].description,
-        isUnlocked: contentData[index].isUnlocked(playerProgress),
-        name: contentData[index].name,
-        txtImage: contentData[index].txtImage,
-        unlockCondition: contentData[index].unlockCondition
 
-       }
-      setSelectedContent(newContent);
-      setShowCharacterDetail(false); // Reset detail view if any image is clicked
-     
+  const handleImageClick = async (character: Char) => {
+    try {
+         await assignCharacterToUser(character.id)
+         await  updateUserProfile({isNewPlayer: false})
+           setSelectedContent(character); 
+    } catch (error) {
+      console.log(error)
     }
   };
 
   const handleSelectCharacterClick = () => {
     setShowCharacterDetail(true); // Show character detail view
   };
+
+
 
   const handleContinueClick = () => {
     if (selectedContent) {
@@ -173,7 +131,7 @@ export default function Character() {
           >
             <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
               {" "}
-              {playerProgress.coins}{" "}
+              {user && user.coins}{" "}
             </Text>
             <Image src="/gems/1.png" w={"20px"} />
           </Flex>
@@ -187,7 +145,7 @@ export default function Character() {
           >
             <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
               {" "}
-              {playerProgress.gemstone}{" "}
+              {user && user.coins}{" "}
             </Text>
             <Image src="/gems/6.png" w={"20px"} />
           </Flex>
@@ -365,32 +323,30 @@ export default function Character() {
               justifyContent="space-between"
               mt={{ base: -14, sm: -10 }}
             >
-              {contentData.map((content, index) => {
-                const isUnlocked = content.isUnlocked(playerProgress);
+              {characters && characters.map((character, index) => {
+                const isUnlocked = character.isUnlocked;
                 return(
                   <Box
                     key={index}
                     position={"relative"}
-                    opacity={content.isUnlocked(playerProgress) ? 1 : 0.4}
-                    onClick={() => handleImageClick(index)}
+                    opacity={isUnlocked ? 1 : 0.4}
+                    onClick={() => handleImageClick(character)}
                     cursor={
-                      content.isUnlocked(playerProgress)
-                        ? "pointer"
-                        : "not-allowed"
+                      isUnlocked ? "pointer" : "not-allowed"
                     }
                   >
                     <Image
-                      src={content.bgImage}
+                      src={character.bgImage}
                       width="100%"
                       height="193px"
                       border={
-                        selectedContent === content
+                        selectedContent === character
                           ? "3px solid #0197f6"
                           : "none"
                       }
                       transition="transform 0.2s"
                       _hover={{
-                        transform: content.isUnlocked(playerProgress)
+                        transform: isUnlocked
                           ? "scale(1.05)"
                           : "none",
                       }}
@@ -415,7 +371,7 @@ export default function Character() {
                         opacity={0}
                         _hover={{ opacity: 1 }} // Show overlay on hover
                       >
-                        {content.unlockCondition}
+                        {character.unlockCondition}
                       </Box>
                     )}
                   </Box>
