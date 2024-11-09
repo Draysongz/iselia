@@ -1,5 +1,5 @@
 import { Address, fromNano, OpenedContract,  toNano } from "@ton/core";
-import { Iselia } from "../wrappers/Iselia";
+import { Iselia } from "../../wrappers/Iselia";
 import { useAsyncInitialze } from "./useAsyncInitialize";
 import { useTonClient } from "./useTonClient";
 import { useTonConnect } from "./useTonConnect";
