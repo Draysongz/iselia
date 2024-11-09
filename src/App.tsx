@@ -9,8 +9,8 @@ import { CharacterProvider } from "./components/CharacterContext";
 import customTheme from "./components/theme"
 import Shop from "./pages/Shop";
 import Team from "./pages/Team";
-import WebApp from "@twa-dev/sdk";
-import { useEffect, useState } from "react";
+// import WebApp from "@twa-dev/sdk";
+// import { useEffect, useState } from "react";
 import { useUserLogin } from "./hooks/useAuth";
 import Loading from "./pages/Loading";
 
