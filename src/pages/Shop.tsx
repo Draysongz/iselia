@@ -114,7 +114,7 @@ export default function Shop() {
         alignItems={"center"}
         pt={{ base: 1, sm: 5 }}
         zIndex={0}
-        position={'relative'}
+        position={"relative"}
       >
         <Box
           bg={"#800080"}
@@ -128,8 +128,17 @@ export default function Shop() {
           opacity={"70%"}
         />
 
-        <Flex gap={5} w={"100%"} justifyContent={"flex-end"} p={3} pb={5} mb={5}>
-          <TonConnectButton />
+        <Flex
+          gap={3}
+          w={"100%"}
+          justifyContent={"center"}
+          p={2}
+          pb={5}
+          mb={5}
+        >
+          <Box alignSelf={"start"}>
+            <TonConnectButton />
+          </Box>
           <Flex
             // w={"70px"}
             bg={"rgba(0, 0, 0, 0.3)"}
@@ -138,7 +147,7 @@ export default function Shop() {
             borderRadius={"5px"}
             border={"3px solid black"}
           >
-            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
+            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 12px"}>
               {" "}
               {playerProgress.coins}{" "}
             </Text>
@@ -152,7 +161,7 @@ export default function Shop() {
             borderRadius={"5px"}
             border={"3px solid black"}
           >
-            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
+            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 12px"}>
               {" "}
               {playerProgress.gemstone}{" "}
             </Text>
@@ -164,10 +173,10 @@ export default function Shop() {
             <Flex
               direction={"column"}
               w={"100%"}
-            //   bg={"rgb(72 49 33)"}
+              //   bg={"rgb(72 49 33)"}
               // height={"250px"}
-            //   border={"3px solid black"}
-            //   borderRadius={"5px"}
+              //   border={"3px solid black"}
+              //   borderRadius={"5px"}
               gap={5}
               pb={5}
             >
@@ -254,8 +263,8 @@ export default function Shop() {
             </Flex>
             <Box
               w={"100%"}
-            //   h={{ base: "100vh", sm: "70vh" }}
-            //   bg={"rgba(11, 20, 19, 1)"}
+              //   h={{ base: "100vh", sm: "70vh" }}
+              //   bg={"rgba(11, 20, 19, 1)"}
               pb={32}
             >
               <Box
@@ -339,129 +348,128 @@ export default function Shop() {
                           </Button>
                         </Flex>
                       </Flex> */}
-                    {Boost.map((boost) => {
-                        return(
-                      <Flex
-                        bg={"#050517"}
-                        w={"100%"}
-                        borderRadius={"10px"}
-                        justifyContent={'space-between'}
-                        p={'5px 20px'}
-                        border={'1px solid #f7f7ff'}
-                        alignItems={'center'}
-                      >
-                        <Image src={boost.image} w={"115px"} h={'115px'} />
-                        <Flex
-                          w={"50%"}
-                          height={''}
-                          direction={"column"}
-                          justifyContent={"space-between"}
-                          alignItems={"center"}
-                          py={3}
-                          gap={3}
-                        //   bg={'red'}
-                        >
-                          <Text
-                            fontSize={"16px"}
-                            fontWeight={800}
-                            textAlign={"center"}
-                            letterSpacing={'2px'}
+                      {Boost.map((boost) => {
+                        return (
+                          <Flex
+                            bg={"#050517"}
+                            w={"100%"}
+                            borderRadius={"10px"}
+                            justifyContent={"space-between"}
+                            p={"5px 20px"}
+                            border={"1px solid #f7f7ff"}
+                            alignItems={"center"}
                           >
-                            {boost.name}
-                          </Text>
-                          <Box w={"100%"}>
-                            <Text textAlign={"center"} color={"gray"}>
-                              {boost.notice}
-                            </Text>
-                            <Button
-                              bg={"#800080"}
-                              display={"flex"}
-                              gap={3}
+                            <Image src={boost.image} w={"115px"} h={"115px"} />
+                            <Flex
+                              w={"50%"}
+                              height={""}
+                              direction={"column"}
+                              justifyContent={"space-between"}
                               alignItems={"center"}
-                              textAlign={"center"}
-                              w={"90%"}
-                              mx={"auto"}
-                              border={'2px solid #0197f6'}
-                              borderRadius={'10px'}
-                              _hover={{ bg: "#800080" }}
+                              py={3}
+                              gap={3}
+                              //   bg={'red'}
                             >
-                              <Image src={boost.coin} w={boost.coinWidth} />
                               <Text
-                                color={"white"}
+                                fontSize={"16px"}
                                 fontWeight={800}
-                                fontSize={"20px"}
+                                textAlign={"center"}
+                                letterSpacing={"2px"}
                               >
-                                {boost.btnTxt}
+                                {boost.name}
                               </Text>
-                            </Button>
-                          </Box>
-                        </Flex>
-                      </Flex>
-                        )
-                    })}
+                              <Box w={"100%"}>
+                                <Text textAlign={"center"} color={"gray"}>
+                                  {boost.notice}
+                                </Text>
+                                <Button
+                                  bg={"#800080"}
+                                  display={"flex"}
+                                  gap={3}
+                                  alignItems={"center"}
+                                  textAlign={"center"}
+                                  w={"90%"}
+                                  mx={"auto"}
+                                  border={"2px solid #0197f6"}
+                                  borderRadius={"10px"}
+                                  _hover={{ bg: "#800080" }}
+                                >
+                                  <Image src={boost.coin} w={boost.coinWidth} />
+                                  <Text
+                                    color={"white"}
+                                    fontWeight={800}
+                                    fontSize={"20px"}
+                                  >
+                                    {boost.btnTxt}
+                                  </Text>
+                                </Button>
+                              </Box>
+                            </Flex>
+                          </Flex>
+                        );
+                      })}
                     </Flex>
                   </TabPanel>
                   <TabPanel>
                     <Flex direction={"column"} w={"100%"} gap={3}>
-                    {Chest.map((chest, index) => {
-                        return(
-
-                    <Flex
-                        key={index}
-                        bg={"#050517"}
-                        w={"100%"}
-                        borderRadius={"10px"}
-                        justifyContent={'space-between'}
-                        p={'5px 20px'}
-                        border={'1px solid #f7f7ff'}
-                        alignItems={'center'}
-                      >
-                        <Image src={chest.image} w={"115px"} h={'115px'} />
-                        <Flex
-                          w={"50%"}
-                          height={''}
-                          direction={"column"}
-                          justifyContent={"space-between"}
-                          alignItems={"center"}
-                          py={3}
-                          gap={3}
-                        //   bg={'red'}
-                        >
-                          <Text
-                            fontSize={"16px"}
-                            fontWeight={800}
-                            textAlign={"center"}
-                            letterSpacing={'2px'}
+                      {Chest.map((chest, index) => {
+                        return (
+                          <Flex
+                            key={index}
+                            bg={"#050517"}
+                            w={"100%"}
+                            borderRadius={"10px"}
+                            justifyContent={"space-between"}
+                            p={"5px 20px"}
+                            border={"1px solid #f7f7ff"}
+                            alignItems={"center"}
                           >
-                            {chest.name}
-                          </Text>
-                          <Box w={"100%"}>
-                            <Button
-                              bg={"#800080"}
-                              display={"flex"}
-                              gap={3}
+                            <Image src={chest.image} w={"115px"} h={"115px"} />
+                            <Flex
+                              w={"50%"}
+                              height={""}
+                              direction={"column"}
+                              justifyContent={"space-between"}
                               alignItems={"center"}
-                              textAlign={"center"}
-                              w={"90%"}
-                              mx={"auto"}
-                              border={'2px solid #0197f6'}
-                              borderRadius={'10px'}
-                              _hover={{ bg: "#800080" }}
-                              isDisabled={index > 0}
+                              py={3}
+                              gap={3}
+                              //   bg={'red'}
                             >
                               <Text
-                                color={"white"}
+                                fontSize={"16px"}
                                 fontWeight={800}
-                                fontSize={"20px"}   
+                                textAlign={"center"}
+                                letterSpacing={"2px"}
                               >
-                                {chest.btnTxt}
+                                {chest.name}
                               </Text>
-                            </Button>
-                          </Box>
-                        </Flex>
-                      </Flex>
-                        )
-                    })}
+                              <Box w={"100%"}>
+                                <Button
+                                  bg={"#800080"}
+                                  display={"flex"}
+                                  gap={3}
+                                  alignItems={"center"}
+                                  textAlign={"center"}
+                                  w={"90%"}
+                                  mx={"auto"}
+                                  border={"2px solid #0197f6"}
+                                  borderRadius={"10px"}
+                                  _hover={{ bg: "#800080" }}
+                                  isDisabled={index > 0}
+                                >
+                                  <Text
+                                    color={"white"}
+                                    fontWeight={800}
+                                    fontSize={"20px"}
+                                  >
+                                    {chest.btnTxt}
+                                  </Text>
+                                </Button>
+                              </Box>
+                            </Flex>
+                          </Flex>
+                        );
+                      })}
                     </Flex>
                   </TabPanel>
                 </TabPanels>
