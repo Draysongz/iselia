@@ -9,6 +9,9 @@ import { CharacterProvider } from "./components/CharacterContext";
 import customTheme from "./components/theme"
 import Shop from "./pages/Shop";
 import Team from "./pages/Team";
+import Earn from "./pages/Earn";
+import Task from "./pages/Task";
+import Settings from "./pages/Settings";
 // import WebApp from "@twa-dev/sdk";
 // import { useEffect, useState } from "react";
 import { useUserLogin } from "./hooks/useAuth";
@@ -65,6 +68,9 @@ useEffect(()=>{
             <Route path="characters" element={<Character />}  />
             <Route path="team" element={<Team />}/>
             <Route path="shop" element={<Shop />}  />
+            <Route path="earn" element={<Earn />} />
+            <Route path="tasks" element={<Task />} />
+            <Route path="settings" element={<Settings />} />
           </Routes>
         </Router>
       </CharacterProvider>

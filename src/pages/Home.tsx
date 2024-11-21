@@ -46,7 +46,7 @@ export default function Home() {
 
   // Array of monsters with unique HP, names, and images
   const monsters: Monster[] = [
-    { name: "Monster 1", maxHp: 1000, image: "/Monsters/M1.png" },
+    { name: "Funky Lemur", maxHp: 420, image: "/Monsters/M1.png" },
     { name: "Monster 2", maxHp: 1200, image: "/Monsters/M2.png" },
     { name: "Monster 3", maxHp: 1500, image: "/Monsters/M3.png" },
     { name: "Monster 4", maxHp: 2000, image: "/Monsters/M4.png" },
@@ -191,129 +191,262 @@ export default function Home() {
         height={"100vh"}
         flexDirection={"column"}
         alignItems={"center"}
-        pt={5}
+        pt={1}
         zIndex={0}
       >
-        <Flex gap={5} w={"100%"} justifyContent={"flex-end"} p={3}>
-          <Flex
-            bg={"rgba(0, 0, 0, 0.3)"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            borderRadius={"5px"}
-            border={"3px solid black"}
-          >
-            <Text mx={"auto"} fontSize={"12px"} fontWeight={800} p={"5px 20px"}>
-              {" "}
-              {user && user.coins}{" "}
-            </Text>
-            <Image src="/gems/1.png" w={"20px"} />
+        <Flex gap={5} w={"100%"} p={4} justifyContent={"space-between"}>
+          <Flex direction={"column"} gap={3}>
+            <Link to={"/settings"}>
+              <Flex
+                w={"80px"}
+                h={"20px"}
+                border={"0.5px solid #ff0097"}
+                bg={"#FF00971A"}
+                borderRadius={"15px"}
+                alignItems={"center"}
+                gap={2}
+                justifyContent={"center"}
+              >
+                <Image src="/Icons/settings.png" w={"35%"} ml={-2} />
+                <Text
+                  fontSize={"10px"}
+                  fontWeight={400}
+                  color={"#ffffff"}
+                  w={"38px"}
+                >
+                  Settings
+                </Text>
+              </Flex>
+            </Link>
+            <Flex
+              w={"80px"}
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+              gap={2}
+              justifyContent={"center"}
+            >
+              <Image src="/Icons/info.png" w={"35%"} ml={-2} />
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                w={"38px"}
+              >
+                Info
+              </Text>
+            </Flex>
           </Flex>
-         
+          <Flex gap={1}>
+            <Flex
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+            >
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                px={2}
+                textAlign={"center"}
+              >
+                {" "}
+                {user && user.coins}{" "}
+              </Text>
+              <Image
+                src="/Icons/button-circle-blue.png"
+                w={"27.56px"}
+                h={"27.56px"}
+              />
+            </Flex>
+            <Flex
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+            >
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                px={2}
+                textAlign={"center"}
+              >
+                {" "}
+                {user && user.coins}{" "}
+              </Text>
+              <Image
+                src="/Icons/button-stop-square.png"
+                w={"27.56px"}
+                h={"27.56px"}
+              />
+            </Flex>
+            <Flex
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+            >
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                px={2}
+                textAlign={"center"}
+              >
+                {" "}
+                {user && user.coins}{" "}
+              </Text>
+              <Image
+                src="/Icons/button-hexagon.png"
+                w={"27.56px"}
+                h={"27.56px"}
+              />
+            </Flex>
+          </Flex>
         </Flex>
         {user && !user.isNewPlayer ? (
           <>
-            <Text
-              w={"40%"}
-              h={"33px"}
-              fontSize={"13px"}
-              fontWeight={500}
-              textAlign={"center"}
-              color={"#f7f7ff"}
-              border={"1px solid #0197f6"}
-              bg={"#8000804D"}
-              borderRadius={"10px"}
-              alignContent={"center"}
-            >
-              {/* {selectedContent.name} - {selectedContent.title} */}
-            </Text>
-            <Flex w={"90%"} mt={10}>
-              <Flex
-                alignItems={"center"}
-                gap={2}
-                mt={-3}
-                mx={"auto"}
-                w={"100%"}
-              >
-                <Progress
-                  className="monster"
-                  value={(monsterProgress / currentMonster.maxHp) * 100} // Display as percentage
-                  size="sm"
-                  bg={"transparent"}
-                  border={"3px solid #f7f7ff "}
-                  borderRadius={"5px"}
-                  w={"100%"}
-                  h={"29px"}
-                  position={"relative"}
-                  sx={{
-                    "& > div": {
-                      background: "#800080",
-                    },
-                  }}
-                />
-                <Text
-                  display={"flex"}
-                  position={"absolute"}
-                  w={"88%"}
-                  justifyContent={"space-between"}
-                  ml={1}
-                  alignItems={"center"}
-                  p={"5px"}
-                >
-                  {currentMonster.name}
-                  <span className="text-2xl font-extrabold">
-                    {monsterProgress} HP
-                  </span>
-                </Text>
+            <Box textAlign={"center"}>
+              <Text fontSize={"15px"} lineHeight={"18.13px"}>
+                Level 1
+              </Text>
+              <Flex justifyContent={"center"} alignItems={"center"}>
+                <Box position={"relative"}>
+                  <Image src="Icons/hexagon.png" />
+                  <Text
+                    fontSize={"11px"}
+                    fontWeight={400}
+                    position={"absolute"}
+                    top={"30%"}
+                    left={"21.5%"}
+                  >
+                    BUBBLE JUNGLE
+                  </Text>
+                </Box>
+                <Box position={"relative"} ml={-6}>
+                  <Image src="/Icons/circle.png" w={"62px"} />
+                  <Text
+                    color={"#ff0097"}
+                    fontSize={"20px"}
+                    fontWeight={400}
+                    position={"absolute"}
+                    top={"25%"}
+                    left={"26%"}
+                  >
+                    1/9
+                  </Text>
+                </Box>
               </Flex>
-            </Flex>
+            </Box>
+            <Box
+              textAlign={"center"}
+              w={"100vw"}
+              display={"flex"}
+              flexDirection={"column"}
+              mt={3}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Text fontSize={"24px"} lineHeight={"29.02px"}>
+                17.95K
+              </Text>
+              <Flex
+                w={"90%"}
+                mt={1}
+                bgImage={"../Background/progressbg.png"}
+                bgRepeat={"no-repeat"}
+                backgroundSize={"100%"}
+                h={"33px"}
+              >
+                <Flex
+                  alignItems={"center"}
+                  gap={2}
+                  mt={-2}
+                  mx={"auto"}
+                  w={"93%"}
+                >
+                  <Progress
+                    className="monster"
+                    value={(monsterProgress / currentMonster.maxHp) * 100} // Display as percentage
+                    size="sm"
+                    bg={"transparent"}
+                    w={"100%"}
+                    borderRadius={"2px"}
+                    mt={{ base: "2px", sm: "6px" }}
+                    ml={{ base: "-1px", sm: "1px" }}
+                    h={"13px"}
+                    position={"relative"}
+                    sx={{
+                      "& > div": {
+                        background:
+                          "linear-gradient(270deg, #A1C472 1.18%, #000000 115.1%)",
+                      },
+                    }}
+                  />
+                  <Text
+                    display={"flex"}
+                    position={"absolute"}
+                    w={"80%"}
+                    justifyContent={"space-between"}
+                    ml={1}
+                    mt={1}
+                    alignItems={"center"}
+                    fontSize={"10px"}
+                  >
+                    {currentMonster.name}
+                    <span className="text-[10px] font-extrabold">
+                      {monsterProgress} HP
+                    </span>
+                  </Text>
+                </Flex>
+              </Flex>
+            </Box>
 
             <Flex
               direction={"column"}
               w={"100%"}
               h={{ base: "400px", sm: "600px" }}
               mt={2}
-              gap={6}
               alignItems={"center"}
               pt={{ base: 3, sm: 10 }}
             >
-              <Box w={"100%"} onClick={handleCardClick}>
+              <Flex
+                w={{ base: "250px", sm: "400px" }}
+                h={{ base: "250px", sm: "400px" }}
+                justifyContent={"center"}
+                alignItems={"center"}
+                onClick={handleCardClick}
+                bg={"#FFDF80"}
+                border={"8px solid #59173E"}
+                borderRadius={"50%"}
+                p={4}
+              >
                 <Image
                   src={currentMonster.image}
-                  h={{ base: "250px", sm: "320px" }}
-                  className="scale"
+                  // h={{ base: "250px", sm: "250px" }}
+                  // className="scale"
                   transition="transform 0.2s"
                   mx={"auto"}
                 />
-              </Box>
+              </Flex>
               <Flex
-                direction={character.length > 1 ? "column-reverse" : "row"}
                 alignItems={"center"}
-                gap={2}
-                mt={{ base: 0, sm: 16 }}
+                backgroundSize={"100% 100%"}
+                w={"60%"}
+                mt={{ base: 5, sm: 10 }}
+                bgImage={"../Icons/energybar.png"}
+                bgRepeat={"no-repeat"}
+                h={{ base: "32px", sm: "50px" }}
+                justifyContent={"center"}
               >
-                <Flex direction={"row"}>
-                  {character &&
-                    character.length > 0 &&
-                    character.map((char, index) => {
-                      return (
-                        <Image key={index} src={char.bgImage} w={"65px"} />
-                      );
-                    })}
-                </Flex>
-                <Progress
-                  className="character"
-                  value={characterProgress}
-                  size="sm"
-                  bg={"transparent"}
-                  border={"3px solid #f7f7ff "}
-                  w={"220px"}
-                  h={"29px"}
-                  sx={{
-                    "& > div": {
-                      background: "#800080",
-                    },
-                  }}
-                />
+                <Text fontSize={"10px"}>100 / 500</Text>
               </Flex>
             </Flex>
           </>

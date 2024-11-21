@@ -82,7 +82,7 @@ export const useUserAPI = (userId: string | null) => {
 //     userEventEmitter.emit("userUpdated", user);
 //   }, [user]);
 
-  const BaseUrl = "https://d7f3-98-98-142-70.ngrok-free.app/api";
+  const BaseUrl = "https://51b2-102-88-36-224.ngrok-free.app/api";
 
   // Get user profile
   const fetchUserProfile = async () => {

@@ -1,6 +1,6 @@
 import { Box, Flex, Text, Icon, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { GiZeusSword } from "react-icons/gi";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
@@ -14,12 +14,12 @@ import NavigationBar from "../components/NavigationBar";
 //   txtImage: string;
 // }
 
-interface PlayerProgress {
-    coins: number;
-    questsCompleted: number;
-    monstersKilled: number;
-    gemstone: number,
-  }
+// interface PlayerProgress {
+//     coins: number;
+//     questsCompleted: number;
+//     monstersKilled: number;
+//     gemstone: number,
+//   }
   
 
 export default function Team() {
@@ -31,12 +31,7 @@ export default function Team() {
   const { isOpen, onOpen, onClose }  = useDisclosure();
 
 
-  const playerProgress : PlayerProgress = {
-    coins: 35000,
-    questsCompleted: 2,
-    monstersKilled: 500,
-    gemstone: 1,
-  }
+
 
   // Function to set a background image for a specific box
   const handleImageClick = (boxIndex: number, imageUrl: string) => {
@@ -91,28 +86,112 @@ export default function Team() {
         pt={{ base: 1, sm: 5 }}
         zIndex={0}
       >
-        <Flex gap={5} w={"100%"} justifyContent={"flex-end"} p={3} pb={5} mb={5}>
-          <Flex
-            // w={"70px"}
-            bg={"rgba(0, 0, 0, 0.3)"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            borderRadius={"5px"}
-            border={"3px solid black"}
-          >
-            <Text mx={"auto"} fontSize={'12px'} fontWeight={800} p={'5px 20px'}> {playerProgress.coins} </Text>
-            <Image src="/gems/1.png" w={"20px"} />
+        <Flex gap={5} w={"100%"} p={4} justifyContent={"space-between"}>
+          <Flex direction={"column"} gap={3}>
+            <Link to={"/settings"}>
+              <Flex
+                w={"80px"}
+                h={"20px"}
+                border={"0.5px solid #ff0097"}
+                bg={"#FF00971A"}
+                borderRadius={"15px"}
+                alignItems={"center"}
+                gap={2}
+                justifyContent={"center"}
+              >
+                <Image src="/Icons/settings.png" w={"35%"} ml={-2} />
+                <Text
+                  fontSize={"10px"}
+                  fontWeight={400}
+                  color={"#ffffff"}
+                  w={"38px"}
+                >
+                  Settings
+                </Text>
+              </Flex>
+            </Link>
+            <Flex
+              w={"80px"}
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+              gap={2}
+              justifyContent={"center"}
+            >
+              <Image src="/Icons/info.png" w={"35%"} ml={-2} />
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                w={"38px"}
+              >
+                Info
+              </Text>
+            </Flex>
           </Flex>
-          <Flex
-            // w={"70px"}
-            bg={"rgba(0, 0, 0, 0.3)"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            borderRadius={"5px"}
-            border={"3px solid black"}
-          >
-            <Text mx={"auto"} fontSize={'12px'} fontWeight={800} p={'5px 20px'}> {playerProgress.gemstone} </Text>
-            <Image src="/gems/6.png" w={"20px"} />
+          <Flex gap={1}>
+            <Flex
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+            >
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                px={2}
+                textAlign={"center"}
+              ></Text>
+              <Image
+                src="/Icons/button-circle-blue.png"
+                w={"27.56px"}
+                h={"27.56px"}
+              />
+            </Flex>
+            <Flex
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+            >
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                px={2}
+                textAlign={"center"}
+              ></Text>
+              <Image
+                src="/Icons/button-stop-square.png"
+                w={"27.56px"}
+                h={"27.56px"}
+              />
+            </Flex>
+            <Flex
+              h={"20px"}
+              border={"0.5px solid #ff0097"}
+              bg={"#FF00971A"}
+              borderRadius={"15px"}
+              alignItems={"center"}
+            >
+              <Text
+                fontSize={"10px"}
+                fontWeight={400}
+                color={"#ffffff"}
+                px={2}
+                textAlign={"center"}
+              ></Text>
+              <Image
+                src="/Icons/button-hexagon.png"
+                w={"27.56px"}
+                h={"27.56px"}
+              />
+            </Flex>
           </Flex>
         </Flex>
 
@@ -134,14 +213,12 @@ export default function Team() {
           </ModalContent>
         </Modal>
 
-
         <Box width={"100%"}>
           <Flex
             direction={"column"}
             w={"100%"}
-            bg={"rgb(72 49 33)"}
-            height={"250px"}
-            border={"3px solid black"}
+            bg={"#A60062"}
+            height={"180px"}
             borderRadius={"5px"}
             gap={5}
             pb={5}
@@ -149,16 +226,18 @@ export default function Team() {
             <Box
               width={"30%"}
               height={"50px"}
-              bg={"rgba(72, 49, 33, 1)"}
+              bg={"#FF0097"}
               mt={-5}
               mx={"auto"}
-              border={"3px solid black"}
               color={"white"}
               fontWeight={800}
               fontSize={"20px"}
               textAlign={"center"}
               borderRadius={"5px"}
               letterSpacing={"2px"}
+              justifyContent={"center"}
+              alignContent={"center"}
+              boxShadow={"0px 0px 10px 5px #59173E"}
               sx={{
                 WebkitTextStroke: "1px black", // Custom stroke
                 textStroke: "1px black",
@@ -166,16 +245,21 @@ export default function Team() {
             >
               Team
             </Box>
-            
-              <Flex w={"100%"} h={"70%"} gap={1}>
-              {Array(4)
+
+            <Flex
+              w={"100%"}
+              h={"70%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              {Array(5)
                 .fill(0)
                 .map((_, index) => (
                   <Box
                     key={index}
                     w={"25%"}
                     h={"100%"}
-                    border={"3px solid rgba(128, 0, 128, 1)"}
+                    // border={"3px solid rgba(128, 0, 128, 1)"}
                     borderRadius={"5px"}
                     fontSize={"12px"}
                     textAlign={"center"}
@@ -183,49 +267,65 @@ export default function Team() {
                     justifyContent={"center"}
                     alignItems={"center"}
                     fontWeight={800}
-                    bgColor={boxBackgrounds[index] ? "none" : "rgba(128, 0, 128, 0.6)"}
-                    bgImage={boxBackgrounds[index] ? `url(${boxBackgrounds[index]})` : "none"}
+                    // bgColor={
+                    //   boxBackgrounds[index] ? "none" : "rgba(128, 0, 128, 0.6)"
+                    // }
+                    bgImage={
+                      boxBackgrounds[index]
+                        ? `url(${boxBackgrounds[index]})`
+                        : "/Background/card.png"
+                    }
                     bgRepeat={"no-repeat"}
-                    bgSize={"cover"}
-                    position={'relative'}
-                    onClick={index === 0 && boxBackgrounds[0] ? handleCharacterBoxClick:undefined}
+                    bgPos={"center"}
+                    bgSize={"80% 100%"}
+                    position={"relative"}
+                    onClick={
+                      index === 0 && boxBackgrounds[0]
+                        ? handleCharacterBoxClick
+                        : undefined
+                    }
                     cursor="pointer"
                   >
-                    {boxBackgrounds[index] ? "Character Selected" : "Drag Character here"}
+                    {
+                      boxBackgrounds[index] ? "Character Selected" : ""
+                      // "Drag Character here"
+                    }
 
-                    {boxBackgrounds[index] ? 
-                    <Box
-                    w={"100%"}
-                    h={"30px"}
-                    bg={"rgba(0, 0, 0, 0.6)"}
-                    bottom={0}
-                    position={"absolute"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    gap={5}
-                  >
-                    <Icon
-                      as={GiZeusSword}
-                      bg={"rgba(0, 0, 0, 1)"}
-                      boxSize={6}
-                    />
-                    <Text
-                      letterSpacing={"2px"}
-                      color={"white"}
-                      fontWeight={800}
-                      fontSize={"20px"}
-                      sx={{
-                        WebkitTextStroke: "1px black", // Custom stroke
-                        textStroke: "1px black",
-                      }}
-                    >
-                      84
-                    </Text>
-                  </Box> : <></>}
-
+                    {boxBackgrounds[index] ? (
+                      <Box
+                        w={"100%"}
+                        h={"30px"}
+                        bg={"rgba(0, 0, 0, 0.6)"}
+                        bottom={0}
+                        position={"absolute"}
+                        display={"flex"}
+                        alignItems={"center"}
+                        gap={5}
+                      >
+                        <Icon
+                          as={GiZeusSword}
+                          bg={"rgba(0, 0, 0, 1)"}
+                          boxSize={6}
+                        />
+                        <Text
+                          letterSpacing={"2px"}
+                          color={"white"}
+                          fontWeight={800}
+                          fontSize={"20px"}
+                          sx={{
+                            WebkitTextStroke: "1px black", // Custom stroke
+                            textStroke: "1px black",
+                          }}
+                        >
+                          84
+                        </Text>
+                      </Box>
+                    ) : (
+                      <></>
+                    )}
                   </Box>
                 ))}
-              </Flex>
+            </Flex>
             {selectedContent ? (
               <Text
                 mx={"auto"}
@@ -258,19 +358,14 @@ export default function Team() {
               </Text>
             )}
           </Flex>
-          <Box
-            w={"100%"}
-            h={{ base: "55vh", sm: "70vh" }}
-            bg={"rgba(11, 20, 19, 1)"}
-          >
+          <Box w={"100%"} h={{ base: "55vh", sm: "70vh" }}>
             <Box
               w={"92%"}
               h={"80%"}
-              border={"5px solid rgba(57, 58, 60, 1)"}
               borderTop={"none"}
               mx={"auto"}
               display={"grid"}
-              gridTemplateColumns="repeat(3, 1fr)"
+              gridTemplateColumns="repeat(4, 1fr)"
               p={{ base: 2, sm: 5 }}
               justifyItems={"center"}
               borderBottomRadius={"10px"}
@@ -278,7 +373,7 @@ export default function Team() {
             >
               {selectedContent ? (
                 <Box
-                  w={"100px"}
+                  w={"100%"}
                   h={{ base: "", sm: "150px" }}
                   borderRadius={"10px"}
                   border={"5px solid rgba(57, 58, 60, 1)"}
@@ -287,7 +382,7 @@ export default function Team() {
                   bgSize={"100% 100%"}
                   bgPosition={"center"}
                   position={"relative"}
-                  onClick={() => handleImageClick(0, selectedContent.bgImage)} 
+                  onClick={() => handleImageClick(0, selectedContent.bgImage)}
                 >
                   <Box
                     w={"100%"}
@@ -320,68 +415,89 @@ export default function Team() {
                 </Box>
               ) : (
                 <Box
-                  w={"100px"}
+                  w={"100%"}
                   h={{ base: "", sm: "150px" }}
                   borderRadius={"10px"}
-                  border={"5px solid rgba(57, 58, 60, 1)"}
-                  bg={"rgba(11, 20, 19, 0.8)"}
+                  bg={"#AB6C93C7"}
+                  border={"2px solid #59173E"}
                 ></Box>
               )}
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
               <Box
-                w={"100px"}
+                w={"100%"}
                 h={{ base: "", sm: "150px" }}
                 borderRadius={"10px"}
-                border={"5px solid rgba(57, 58, 60, 1)"}
-                bg={"rgba(11, 20, 19, 0.8)"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
+              ></Box>
+              <Box
+                w={"100%"}
+                h={{ base: "", sm: "150px" }}
+                borderRadius={"10px"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
+              ></Box>
+              <Box
+                w={"100%"}
+                h={{ base: "", sm: "150px" }}
+                borderRadius={"10px"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
+              ></Box>
+              <Box
+                w={"100%"}
+                h={{ base: "", sm: "150px" }}
+                borderRadius={"10px"}
+                bg={"#AB6C93C7"}
+                border={"2px solid #59173E"}
               ></Box>
             </Box>
           </Box>
