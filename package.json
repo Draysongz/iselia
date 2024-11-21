@@ -15,6 +15,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@orbs-network/ton-access": "^2.3.3",
+    "@ton/blueprint": "^0.25.0",
     "@ton/core": "^0.59.0",
     "@ton/ton": "^15.1.0",
     "@tonconnect/ui-react": "^2.0.9",
@@ -43,9 +44,9 @@
     "vite": "^5.4.10"
   },
   "eslintConfig": {
-  "rules": {
-   "no-unused-vars": 0,
-   "@typescript-eslint/no-unused-vars": 0
+    "rules": {
+      "no-unused-vars": 0,
+      "@typescript-eslint/no-unused-vars": 0
+    }
   }
-}
 }
