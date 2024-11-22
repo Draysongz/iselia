@@ -313,7 +313,7 @@ export default function Home() {
         </Flex>
         {user && !user.isNewPlayer ? (
           <>
-            <Box textAlign={"center"}>
+            <Box textAlign={"center"} mt={{base: -4, sm: 0}}>
               <Text fontSize={"15px"} lineHeight={"18.13px"}>
                 Level 1
               </Text>
@@ -413,13 +413,13 @@ export default function Home() {
               direction={"column"}
               w={"100%"}
               h={{ base: "400px", sm: "600px" }}
-              mt={2}
+              mt={{base: 0, sm: -2}}
               alignItems={"center"}
               pt={{ base: 3, sm: 10 }}
             >
               <Flex
-                w={{ base: "250px", sm: "400px" }}
-                h={{ base: "250px", sm: "400px" }}
+                w={{ base: "225px", sm: "400px" }}
+                h={{ base: "225px", sm: "400px" }}
                 justifyContent={"center"}
                 alignItems={"center"}
                 onClick={handleCardClick}
@@ -430,23 +430,38 @@ export default function Home() {
               >
                 <Image
                   src={currentMonster.image}
-                  // h={{ base: "250px", sm: "250px" }}
-                  // className="scale"
                   transition="transform 0.2s"
                   mx={"auto"}
                 />
               </Flex>
+              <Flex direction={'column'} w={'60%'} mt={{base: 3, sm: 5}}>
+                <Flex gap={2}>
+                {character && character.length > 0 && character.map((char, index)=>{
+                  return (
+                    <Link to={'/characters'}>
+                    <Image
+                      key={index}
+                      borderRadius={"50%"}
+                      src={char.bgImage}
+                      w={{ base: "45px", sm: "65px" }}
+                      h={{ base: "45px", sm: "65px" }}
+                    />
+                    </Link>
+                  );
+                })}
+                 </Flex>
               <Flex
                 alignItems={"center"}
                 backgroundSize={"100% 100%"}
-                w={"60%"}
-                mt={{ base: 5, sm: 10 }}
+                w={"100%"}
+                mt={{ base: 2, sm: 2 }}
                 bgImage={"../Icons/energybar.png"}
                 bgRepeat={"no-repeat"}
                 h={{ base: "32px", sm: "50px" }}
                 justifyContent={"center"}
               >
                 <Text fontSize={"10px"}>100 / 500</Text>
+              </Flex>
               </Flex>
             </Flex>
           </>
