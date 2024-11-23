@@ -1,9 +1,33 @@
-import { Box, Flex, Text, Image, Tabs, TabList, Tab, TabPanels, TabPanel , Icon} from "@chakra-ui/react"
+import { Box, Flex, Text, Image, Tabs, TabList, Tab, TabPanels, TabPanel , Icon, useToast} from "@chakra-ui/react"
 import { CiShare2 } from "react-icons/ci";
 import { FaRegCopy } from "react-icons/fa";
+import { initUtils } from "@telegram-apps/sdk";
 
 import NavigationBar from "../components/NavigationBar"
+import { useUser } from "../context/context";
 export default function Earn() {
+  const {user} = useUser()
+  const toast = useToast()
+
+    const handleInviteFriend = () => {
+      const utils = initUtils();
+      const inviteLink = `https://t.me/Iseliaworld_bot/${user?.telegramId}`;
+      const shareText = `Join me on this awesome Telegram mini app!`;
+      const fullUrl = `https://t.me/share/url?url=${encodeURIComponent(
+        inviteLink
+      )}&text=${encodeURIComponent(shareText)}`;
+      utils.openTelegramLink(fullUrl);
+    };
+
+  const copyLink = async()=>{
+    navigator.clipboard.writeText(`https://t.me/Iseliaworld_bot/${user?.telegramId}`);
+    toast({
+      title: "Copied",
+      status: "success",
+      isClosable: true,
+      duration: 2000
+    })
+  }
     return (
       <Box
         display={"flex"}
@@ -142,7 +166,12 @@ export default function Earn() {
             </Flex>
           </Flex>
 
-          <Tabs width={"100%"} variant="unstyled" defaultIndex={1} mt={{base: 3 ,sm:10}}>
+          <Tabs
+            width={"100%"}
+            variant="unstyled"
+            defaultIndex={1}
+            mt={{ base: 3, sm: 10 }}
+          >
             <Box width={"100%"}>
               <Flex
                 direction={"column"}
@@ -198,7 +227,7 @@ export default function Earn() {
                       color={"white"}
                       fontSize={"16px"}
                       fontWeight={400}
-                      textAlign={'center'}
+                      textAlign={"center"}
                       letterSpacing={"2px"}
                       w={"100%"}
                       borderRadius={"10px"}
@@ -212,7 +241,7 @@ export default function Earn() {
                       color={"white"}
                       fontSize={"16px"}
                       fontWeight={400}
-                      textAlign={'center'}
+                      textAlign={"center"}
                       letterSpacing={"2px"}
                       w={"100%"}
                       borderRadius={"10px"}
@@ -322,7 +351,12 @@ export default function Earn() {
                           </Box>
                         </Flex>
 
-                        <Flex w={"90%"} gap={2} mx={"auto"} mt={{base: 5, sm: 10}}>
+                        <Flex
+                          w={"90%"}
+                          gap={2}
+                          mx={"auto"}
+                          mt={{ base: 5, sm: 10 }}
+                        >
                           <Flex
                             width={"50%"}
                             alignItems={"center"}
@@ -331,6 +365,7 @@ export default function Earn() {
                             justifyContent={"center"}
                             p={3}
                             borderRadius={"10px"}
+                            onClick={handleInviteFriend}
                           >
                             <Text
                               fontSize={"12px"}
@@ -349,6 +384,7 @@ export default function Earn() {
                             bg={"#f3c11b"}
                             p={3}
                             borderRadius={"10px"}
+                            onClick={copyLink}
                           >
                             <Text
                               fontSize={"12px"}
@@ -362,13 +398,13 @@ export default function Earn() {
                         </Flex>
                         <Flex
                           w={"90%"}
-                          h={'50px'}
+                          h={"50px"}
                           mx={"auto"}
                           bg={"#35B5FFB2"}
                           boxShadow={"0px 0px 10px 5px #59173E"}
-                          borderRadius={'15px'}
-                          justifyContent={'center'}
-                          alignItems={'center'}
+                          borderRadius={"15px"}
+                          justifyContent={"center"}
+                          alignItems={"center"}
                           gap={3}
                         >
                           <Image src="/Icons/fire.png" />

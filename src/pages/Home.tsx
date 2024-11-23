@@ -20,6 +20,7 @@ interface Monster {
   name: string;
   maxHp: number;
   image: string;
+  rewardPoints: string;
 }
 
 
@@ -43,13 +44,40 @@ export default function Home() {
   const [characterProgress, setCharacterProgress] = useState(100); // Character's progress
   const [showGems, setShowGems] = useState(false); // To control gem display
   const [isTapping, setIsTapping] = useState(false); // Track if the player is tapping
+  const [energy, setEnergy] = useState<number | undefined>()
+
+
+  useEffect(()=>{
+    if(!user) return;
+    setEnergy(user.energyLevel)
+  },[user])
 
   // Array of monsters with unique HP, names, and images
   const monsters: Monster[] = [
-    { name: "Funky Lemur", maxHp: 420, image: "/Monsters/M1.png" },
-    { name: "Monster 2", maxHp: 1200, image: "/Monsters/M2.png" },
-    { name: "Monster 3", maxHp: 1500, image: "/Monsters/M3.png" },
-    { name: "Monster 4", maxHp: 2000, image: "/Monsters/M4.png" },
+    {
+      name: "Funky Lemur",
+      maxHp: 420,
+      image: "/Monsters/M1.png",
+      rewardPoints: "500",
+    },
+    {
+      name: "Monster 2",
+      maxHp: 1200,
+      image: "/Monsters/M2.png",
+      rewardPoints: "700",
+    },
+    {
+      name: "Monster 3",
+      maxHp: 1500,
+      image: "/Monsters/M3.png",
+      rewardPoints: "1000",
+    },
+    {
+      name: "Monster 4",
+      maxHp: 2000,
+      image: "/Monsters/M4.png",
+      rewardPoints: "10500",
+    },
   ];
 
   useEffect(() => {
@@ -59,16 +87,18 @@ export default function Home() {
     }
   }, [character]);
 
-
-
   const [currentMonsterIndex, setCurrentMonsterIndex] = useState(0);
   const currentMonster = monsters[currentMonsterIndex];
   const [monsterProgress, setMonsterProgress] = useState(currentMonster.maxHp);
   const [regenRate, setRegenRate] = useState(100);
   const [totalDamageDealt, setTotalDamageDealt] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  console.log(totalDamageDealt)
 
-  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault(); 
+
+  const handleCardClick = async(e: React.MouseEvent<HTMLDivElement>) => {
+    if(!user && energy! < 0) return;
+    e.preventDefault();
     e.stopPropagation();
     if (monsterProgress > 0 && characterProgress > 0) {
       // Set tapping state to true
@@ -80,6 +110,7 @@ export default function Home() {
       const damage = damageValues;
       const totalDamage = damage.reduce((acc, curr) => acc + curr, 0);
       setTotalDamageDealt((prev) => prev + totalDamage);
+     
 
       const card = e.currentTarget;
       const rect = card.getBoundingClientRect();
@@ -92,10 +123,14 @@ export default function Home() {
         card.style.transform = "";
       }, 100);
 
+      
+       setEnergy((prev) => prev! - 1);
       setMonsterProgress((prev) => Math.max(prev - totalDamage, 0)); // Reduce monster's progress
       setPoints(points + totalDamage);
       setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
       setCharacterProgress((prev) => Math.max(prev - 2, 0)); // Reduce character progress by 2
+     
+      
     }
   };
 
@@ -145,24 +180,48 @@ export default function Home() {
   }, [isTapping]);
 
   // Effect to handle monster defeat and transition to next monster
-  useEffect(() => {
-    const monsterset = async () => {
-      if (monsterProgress === 0 && currentMonsterIndex < monsters.length - 1) {
-        if (!user) return;
-        const rewards = Math.floor(totalDamageDealt / 10);
-        await updateUserProfile({ coins: user.coins + rewards });
+  // Effect to handle monster defeat and transition to the next monster
+useEffect(() => {
+  const handleMonsterDefeat = async () => {
+    if (!user || isTransitioning) return;
+
+    if (monsterProgress === 0 && currentMonsterIndex < monsters.length - 1) {
+      setIsTransitioning(true); // Prevent re-execution while transitioning
+
+      // Customize rewards logic
+      const baseReward = 50; // Flat reward for defeating a monster
+      const levelMultiplier = monsters[currentMonsterIndex].maxHp / 10; // Scaling reward based on monster level
+      const rewards = baseReward + levelMultiplier;
+
+      console.log("Monster defeated! Rewards earned:", rewards);
+
+      try {
+        // Update user's profile with the new rewards
+        const updatedCoins = user.coins + rewards;
+        await updateUserProfile({ coins: updatedCoins });
+
+        console.log("Updated user coins:", updatedCoins);
+
+        // Show gems for a brief moment after defeating a monster
         setShowGems(true);
+
+        // Transition to the next monster after a delay
         setTimeout(() => {
           setShowGems(false);
           setCurrentMonsterIndex((prev) => prev + 1);
-          setMonsterProgress(monsters[currentMonsterIndex + 1].maxHp);
-          setTotalDamageDealt(0);
+          setMonsterProgress(monsters[currentMonsterIndex + 1].maxHp); // Reset monster progress
+          setTotalDamageDealt(0); // Reset damage tracker
+          setIsTransitioning(false); // Allow for future transitions
         }, 2000);
+      } catch (error) {
+        console.error("Failed to update user profile:", error);
+        setIsTransitioning(false); // Reset transition state on error
       }
-    };
+    }
+  };
 
-    monsterset();
-  }, [monsterProgress, currentMonsterIndex]);
+  handleMonsterDefeat();
+}, [monsterProgress, currentMonsterIndex, monsters, user, isTransitioning]);
 
   return (
     <Box
@@ -315,7 +374,7 @@ export default function Home() {
         </Flex>
         {user && !user.isNewPlayer ? (
           <>
-            <Box textAlign={"center"} mt={{base: -4, sm: 0}}>
+            <Box textAlign={"center"} mt={{ base: -4, sm: 0 }}>
               <Text fontSize={"15px"} lineHeight={"18.13px"}>
                 Level 1
               </Text>
@@ -415,7 +474,7 @@ export default function Home() {
               direction={"column"}
               w={"100%"}
               h={{ base: "400px", sm: "600px" }}
-              mt={{base: 0, sm: -2}}
+              mt={{ base: 0, sm: -2 }}
               alignItems={"center"}
               pt={{ base: 3, sm: 10 }}
               // bg={'red'}
@@ -430,43 +489,44 @@ export default function Home() {
                 border={"8px solid #59173E"}
                 borderRadius={"50%"}
                 p={4}
-                position={'relative'}
+                position={"relative"}
               >
                 <Image
                   src={currentMonster.image}
                   transition="transform 0.2s"
                   mx={"auto"}
-                 
                 />
               </Flex>
-              <Flex direction={'column'} w={'60%'} mt={{base: 3, sm: 5}}>
+              <Flex direction={"column"} w={"60%"} mt={{ base: 3, sm: 5 }}>
                 <Flex gap={2}>
-                {character && character.length > 0 && character.map((char, index)=>{
-                  return (
-                    <Link to={'/characters'}>
-                    <Image
-                      key={index}
-                      borderRadius={"50%"}
-                      src={char.bgImage}
-                      w={{ base: "45px", sm: "65px" }}
-                      h={{ base: "45px", sm: "65px" }}
-                    />
-                    </Link>
-                  );
-                })}
-                 </Flex>
-              <Flex
-                alignItems={"center"}
-                backgroundSize={"100% 100%"}
-                w={"100%"}
-                mt={{ base: 2, sm: 2 }}
-                bgImage={"../Icons/energybar.png"}
-                bgRepeat={"no-repeat"}
-                h={{ base: "32px", sm: "50px" }}
-                justifyContent={"center"}
-              >
-                <Text fontSize={"10px"}>100 / 500</Text>
-              </Flex>
+                  {character &&
+                    character.length > 0 &&
+                    character.map((char, index) => {
+                      return (
+                        <Link to={"/characters"}>
+                          <Image
+                            key={index}
+                            borderRadius={"50%"}
+                            src={char.bgImage}
+                            w={{ base: "45px", sm: "65px" }}
+                            h={{ base: "45px", sm: "65px" }}
+                          />
+                        </Link>
+                      );
+                    })}
+                </Flex>
+                <Flex
+                  alignItems={"center"}
+                  backgroundSize={"100% 100%"}
+                  w={"100%"}
+                  mt={{ base: 2, sm: 2 }}
+                  bgImage={"../Icons/energybar.png"}
+                  bgRepeat={"no-repeat"}
+                  h={{ base: "32px", sm: "50px" }}
+                  justifyContent={"center"}
+                >
+                  <Text fontSize={"10px"}>{`${energy} / ${user && user.energyLevelLimit}`}</Text>
+                </Flex>
               </Flex>
             </Flex>
           </>

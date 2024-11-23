@@ -4,28 +4,18 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { GiZeusSword } from "react-icons/gi";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
+import { useUser } from "../context/context";
 
-// interface ContentData {
-//   bgImage: string;
-//   bg: string;
-//   name: string;
-//   title: string;
-//   description: string;
-//   txtImage: string;
-// }
 
-// interface PlayerProgress {
-//     coins: number;
-//     questsCompleted: number;
-//     monstersKilled: number;
-//     gemstone: number,
-//   }
   
 
 export default function Team() {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedContent } = location.state || {};
+   const { user, character } = useUser();
+   console.log(character)
+    const { fetchUserCharacters } = useCharacter(user?.id!);
 
   const [boxBackgrounds, setBoxBackgrounds] = useState<string[]>(Array(4).fill(""));
   const { isOpen, onOpen, onClose }  = useDisclosure();
