@@ -41,7 +41,7 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
      };
 
      fetchCharacters();
-  }, [user]);
+  }, [user?.telegramId]);
 
   // const { selectedContent } = location.state || {};
 
@@ -309,7 +309,7 @@ useEffect(() => {
                     </Text>
                   </Flex>
                 </Link>
-                <Flex
+                {/* <Flex
                   w={"80px"}
                   h={"20px"}
                   border={"0.5px solid #ff0097"}
@@ -328,7 +328,7 @@ useEffect(() => {
                   >
                     Info
                   </Text>
-                </Flex>
+                </Flex> */}
               </Flex>
               <Flex gap={1}>
                 <Flex
@@ -535,7 +535,7 @@ useEffect(() => {
                         character.length > 0 &&
                         character.map((char, index) => {
                           return (
-                            <Link to={"/characters"}>
+                          
                               <Image
                                 key={index}
                                 borderRadius={"50%"}
@@ -543,7 +543,7 @@ useEffect(() => {
                                 w={{ base: "45px", sm: "65px" }}
                                 h={{ base: "45px", sm: "65px" }}
                               />
-                            </Link>
+                         
                           );
                         })}
                     </Flex>
