@@ -9,6 +9,7 @@ import { useUserAPI } from "../hooks/useUserApi";
 
 
 
+
 export interface Char {
   id: string;
   name: string;
@@ -26,20 +27,20 @@ export interface Char {
 }
 
 
-const characterArray = [
-  {imageName: "/characters/f222.png"},
-  {imageName: "/characters/f001.png"},
-  {imageName: "/characters/f096.png"},
-  {imageName: "/characters/f023.png"},
-  {imageName: "/characters/f175.png"},
-  {imageName: "/characters/f201.png"},
-  {imageName: "/characters/f082.png"},
-  {imageName: "/characters/f005.png"},
-  {imageName: "/characters/f009.png"},
-  {imageName: "/characters/f040.png"},
-  {imageName: "/characters/f169.png"},
-  {imageName: "/characters/f025.png"},
-]
+// const characterArray = [
+//   {imageName: "/characters/f222.png"},
+//   {imageName: "/characters/f001.png"},
+//   {imageName: "/characters/f096.png"},
+//   {imageName: "/characters/f023.png"},
+//   {imageName: "/characters/f175.png"},
+//   {imageName: "/characters/f201.png"},
+//   {imageName: "/characters/f082.png"},
+//   {imageName: "/characters/f005.png"},
+//   {imageName: "/characters/f009.png"},
+//   {imageName: "/characters/f040.png"},
+//   {imageName: "/characters/f169.png"},
+//   {imageName: "/characters/f025.png"},
+// ]
 
 
 
@@ -49,56 +50,55 @@ const characterArray = [
 export default function Character() {
   const {user, character} = useUser()
   const {updateUserProfile} = useUserAPI(user?.telegramId!)
-  const {fetchCharacters, assignCharacterToUser} = useCharacter(user?.id!)
+  const {fetchCharacters, assignCharacterToUser, characters} = useCharacter(user?.id!)
 
 
   const [selectedContent, setSelectedContent] = useState<any | null>(null);
   const navigate = useNavigate();
-  const [showCharacterDetail, setShowCharacterDetail] = useState(false);
- 
-  console.log(showCharacterDetail)
+  console.log(selectedContent)
+
 
   useEffect(()=>{
     fetchCharacters()
   },[])
+  console.log(characters)
 
 
-  const handleImageClick = async (char: Char) => {
-    if(!char.isUnlocked) return ;
-    if(character && character.length > 0){
-      let owned = false
-      character.map((userchar)=>{
-       if(userchar.id === char.id){
-        owned =true
-       }
-      })
-      if(owned){
+  const handleImageClick = async (pick: Char
+  ) => {
+  
+
+    if (!pick.isUnlocked) return;
+
+    if (character && character.length > 0) {
+      let owned = false;
+      character.map((userchar) => {
+        if (userchar.id === pick.id) {
+          owned = true;
+        }
+      });
+
+      if (owned) {
         return;
       }
     }
+
     try {
-         await assignCharacterToUser(char.id)
-         await  updateUserProfile({isNewPlayer: false})
-          setSelectedContent(char); 
+      await assignCharacterToUser(pick.id);
+      await updateUserProfile({ isNewPlayer: false });
+      setSelectedContent(pick);
+      navigate("/team", { state: { selectedContent: pick} });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
-  const handleSelectCharacterClick = () => {
-    setShowCharacterDetail(true); // Show character detail view
-  };
-
-  console.log(handleImageClick)
-  console.log(handleSelectCharacterClick)
 
 
-  const handleContinueClick = () => {
-    if (selectedContent) {
-      navigate("/team", { state: { selectedContent } });
-    }
-  };
-  console.log(handleContinueClick)
+
+
+
+
 
   return (
     <Box
@@ -139,7 +139,7 @@ export default function Character() {
           bg={"#800080"}
           position={"absolute"}
           top={"-270px"}
-          boxShadow="0 0 80px 80px rgba(128, 0, 128, 0.6)" 
+          boxShadow="0 0 80px 80px rgba(128, 0, 128, 0.6)"
           backdropFilter="blur(8px)"
           w={"270px"}
           h={"270px"}
@@ -277,19 +277,47 @@ export default function Character() {
           display={"grid"}
           gridTemplateColumns="repeat(2, 1fr)"
         >
-          {characterArray.map((pick) => {
-            return (
+          {characters
+            .sort((a, b) =>
+              a.isUnlocked === b.isUnlocked ? 0 : a.isUnlocked ? -1 : 1
+            ) // Sort unlocked characters first
+            .map((pick) => (
               <Flex
-                bgImage={pick.imageName}
-                bgSize={'100%'}
+                key={pick.id}
+                bgImage={pick.bgImage}
+                bgSize={"100% 100%"}
                 w={"100%"}
                 h={"161px"}
                 bgRepeat={"no-repeat"}
                 border={"10px solid #FFCE3B"}
                 mt={-1}
-              />
-            );
-          })}
+                position="relative" // Required for overlay
+                onClick={() =>
+                  pick.isUnlocked ? handleImageClick(pick) : null
+                } // Disable click for locked characters
+                cursor={pick.isUnlocked ? "pointer" : "not-allowed"} // Change cursor for locked characters
+                filter={pick.isUnlocked ? "none" : "grayscale(100%)"} // Grayscale filter for locked characters
+                opacity={pick.isUnlocked ? 1 : 0.5} // Dim the appearance of locked characters
+              >
+                {!pick.isUnlocked && (
+                  <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    w="100%"
+                    h="100%"
+                    bg="rgba(0, 0, 0, 0.5)" // Add a semi-transparent overlay
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    color="white"
+                    fontWeight="bold"
+                  >
+                    Locked
+                  </Box>
+                )}
+              </Flex>
+            ))}
         </Box>
       </Flex>
       <NavigationBar />
