@@ -5,7 +5,7 @@ import { useUser } from '../context/context';
 
 // Define the base URL for the API
 
-  const BaseUrl = "https://e8a1-105-112-176-212.ngrok-free.app/api";
+  const BaseUrl = "https://72dc-105-112-17-118.ngrok-free.app/api";
 
 const useCharacter = (userId: string) => {
   const [characters, setCharacters] = useState<Character[]>([]);
