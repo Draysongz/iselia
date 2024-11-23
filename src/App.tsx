@@ -18,7 +18,7 @@ import { useUserLogin } from "./hooks/useAuth";
 import Loading from "./pages/Loading";
 
 import { useUser } from "./context/context";
-import { useEffect } from "react";
+
 
 function App() {
    const [initData, setInitData] = useState("");
