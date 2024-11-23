@@ -5,6 +5,7 @@ import { GiZeusSword } from "react-icons/gi";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
 import { useUser } from "../context/context";
+import useCharacter from "../hooks/useCharacter";
 
 
   
@@ -15,7 +16,7 @@ export default function Team() {
   const { selectedContent } = location.state || {};
    const { user, character } = useUser();
    console.log(character)
-    const { fetchUserCharacters } = useCharacter(user?.id!);
+    // const { fetchUserCharacters } = useCharacter(user?.id!);
 
   const [boxBackgrounds, setBoxBackgrounds] = useState<string[]>(Array(4).fill(""));
   const { isOpen, onOpen, onClose }  = useDisclosure();
