@@ -68,6 +68,8 @@ export default function Home() {
   const [totalDamageDealt, setTotalDamageDealt] = useState(0);
 
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault(); 
+    e.stopPropagation();
     if (monsterProgress > 0 && characterProgress > 0) {
       // Set tapping state to true
       setIsTapping(true);
@@ -416,10 +418,11 @@ export default function Home() {
               mt={{base: 0, sm: -2}}
               alignItems={"center"}
               pt={{ base: 3, sm: 10 }}
+              // bg={'red'}
             >
               <Flex
-                w={{ base: "225px", sm: "400px" }}
-                h={{ base: "225px", sm: "400px" }}
+                w={{ base: "225px", sm: "350px" }}
+                h={{ base: "225px", sm: "350px" }}
                 justifyContent={"center"}
                 alignItems={"center"}
                 onClick={handleCardClick}
@@ -427,11 +430,13 @@ export default function Home() {
                 border={"8px solid #59173E"}
                 borderRadius={"50%"}
                 p={4}
+                position={'relative'}
               >
                 <Image
                   src={currentMonster.image}
                   transition="transform 0.2s"
                   mx={"auto"}
+                 
                 />
               </Flex>
               <Flex direction={'column'} w={'60%'} mt={{base: 3, sm: 5}}>
@@ -539,10 +544,10 @@ export default function Home() {
       {clicks.map((click) => (
         <div
           key={click.id}
-          className=" flex absolute text-2xl gap-2  opacity-0  pointer-events-none text-[red] font-extrabold"
+          className=" flex text-2xl gap-2 absolute  opacity-0  pointer-events-none text-[red] font-extrabold"
           style={{
             top: `${click.y - 42}px`,
-            left: `${click.x - 28}px`,
+            // left: `${click.x - 28}px`,
             animation: "float 1s ease-out",
           }}
           onAnimationEnd={() => handleAnimationEnd(click.id)}
