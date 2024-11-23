@@ -285,7 +285,7 @@ useEffect(() => {
             pt={1}
             zIndex={0}
           >
-            <Flex gap={5} w={"100%"} p={4} justifyContent={"space-between"}>
+            <Flex gap={3} w={"100%"} p={4} justifyContent={"space-between"}>
               <Flex direction={"column"} gap={3}>
                 <Link to={"/settings"}>
                   <Flex
@@ -441,7 +441,7 @@ useEffect(() => {
                   w={"100vw"}
                   display={"flex"}
                   flexDirection={"column"}
-                  mt={3}
+                  mt={2}
                   justifyContent={"center"}
                   alignItems={"center"}
                 >
