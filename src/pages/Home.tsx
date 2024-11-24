@@ -56,7 +56,7 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [showGems, setShowGems] = useState(false); // To control gem display
   const [isTapping, setIsTapping] = useState(false); // Track if the player is tapping
   const [energy, setEnergy] = useState(0)
-   const batchTimeout = useRef<NodeJS.Timeout | null>(null);
+  //  const batchTimeout = useRef<NodeJS.Timeout | null>(null);
 
 
   useEffect(()=>{
@@ -159,22 +159,22 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
       setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
       setCharacterProgress((prev) => Math.max(prev - 2, 0)); // Reduce character progress by 2
      
-        if (!batchTimeout.current) {
-          batchTimeout.current = setTimeout(async () => {
-            try {
-              // Use the updated availableTaps and tapsBuffer for a consistent update
-              const tapsToUpdate = newTaps;
+        // if (!batchTimeout.current) {
+        //   batchTimeout.current = setTimeout(async () => {
+        //     try {
+        //       // Use the updated availableTaps and tapsBuffer for a consistent update
+        //       const tapsToUpdate = newTaps;
 
-              await updateUserProfile({
-                energyLevel: tapsToUpdate,
-              });
-            } catch (error) {
-              console.error("Error updating taps:", error);
-            } finally {
-              batchTimeout.current = null; // Reset the timeout reference
-            }
-          }, 3000);
-        }
+        //       await updateUserProfile({
+        //         energyLevel: tapsToUpdate,
+        //       });
+        //     } catch (error) {
+        //       console.error("Error updating taps:", error);
+        //     } finally {
+        //       batchTimeout.current = null; // Reset the timeout reference
+        //     }
+        //   }, 3000);
+        // }
     }
   };
 
