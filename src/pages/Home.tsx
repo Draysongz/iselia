@@ -529,7 +529,7 @@ useEffect(() => {
                       mx={"auto"}
                     />
                   </Flex>
-                  <Flex direction={"column"} w={"60%"} mt={{ base: 3, sm: 5 }}>
+                  <Flex direction={"column"} w={"60%"} mt={{ base: 2, sm: 3 }}>
                     <Flex gap={2}>
                       {character &&
                         character.length > 0 &&
@@ -551,7 +551,7 @@ useEffect(() => {
                       alignItems={"center"}
                       backgroundSize={"100% 100%"}
                       w={"100%"}
-                      mt={{ base: 2, sm: 2 }}
+                      mt={{ base: 1, sm: 1 }}
                       bgImage={"../Icons/energybar.png"}
                       bgRepeat={"no-repeat"}
                       h={{ base: "32px", sm: "50px" }}
