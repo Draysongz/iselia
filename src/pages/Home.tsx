@@ -266,16 +266,16 @@ useEffect(() => {
           alignItems={"center"}
           textColor={"white"}
           overflow={"hidden"}
-          _before={{
-            content: '""',
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "#05051799",
-            zIndex: 0,
-          }}
+          // _before={{
+          //   content: '""',
+          //   position: "absolute",
+          //   top: 0,
+          //   left: 0,
+          //   width: "100%",
+          //   height: "100%",
+          //   backgroundColor: "#05051799",
+          //   zIndex: 0,
+          // }}
         >
           <Flex
             width={"100%"}
