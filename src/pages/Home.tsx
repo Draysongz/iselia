@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Image, Progress, Spinner } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
@@ -28,7 +28,7 @@ interface Monster {
 export default function Home() {
   // const location = useLocation();
   const { user, character } = useUser();
-  const { updateUserProfile } = useUserAPI(user?.telegramId!);
+  const { updateUserProfile, refillTaps } = useUserAPI(user?.telegramId!);
   const { fetchUserCharacters } = useCharacter(user?.id!);
 const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   useEffect(() => {
@@ -45,6 +45,8 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
 
   // const { selectedContent } = location.state || {};
 
+
+
   const [points, setPoints] = useState(0);
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
     []
@@ -53,13 +55,28 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [characterProgress, setCharacterProgress] = useState(100); // Character's progress
   const [showGems, setShowGems] = useState(false); // To control gem display
   const [isTapping, setIsTapping] = useState(false); // Track if the player is tapping
-  const [energy, setEnergy] = useState<number | undefined>()
+  const [energy, setEnergy] = useState(0)
+   const batchTimeout = useRef<NodeJS.Timeout | null>(null);
 
 
   useEffect(()=>{
     if(!user) return;
-    setEnergy(user.energyLevel)
+    setEnergy(user.energyLevel);
   },[user])
+
+    useEffect(() => {
+      const handleRefill = async () => {
+        try {
+          await refillTaps();
+        } catch (err) {
+          console.error("Error refilling taps:", err);
+        }
+      };
+
+      const intervalId = setInterval(handleRefill, 5000); // Runs every 5 seconds
+
+      return () => clearInterval(intervalId); // Cleanup on component unmount
+    }, []);
 
   // Array of monsters with unique HP, names, and images
   const monsters: Monster[] = [
@@ -105,6 +122,7 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   console.log(totalDamageDealt)
 
 
+
   const handleCardClick = async(e: React.MouseEvent<HTMLDivElement>) => {
     if (!user || energy! <= 0) return;
     e.preventDefault();
@@ -114,6 +132,7 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
       setIsTapping(true);
 
       console.log(damageValues);
+      console.log("energy left", energy)
 
       // Randomly pick a damage value from the array
       const damage = damageValues;
@@ -132,14 +151,30 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
         card.style.transform = "";
       }, 100);
 
-      
-       setEnergy((prev) => prev! - 1);
+
+      const newTaps = energy! - 1;
+      setEnergy(newTaps)
       setMonsterProgress((prev) => Math.max(prev - totalDamage, 0)); // Reduce monster's progress
       setPoints(points + totalDamage);
       setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
       setCharacterProgress((prev) => Math.max(prev - 2, 0)); // Reduce character progress by 2
      
-      
+        if (!batchTimeout.current) {
+          batchTimeout.current = setTimeout(async () => {
+            try {
+              // Use the updated availableTaps and tapsBuffer for a consistent update
+              const tapsToUpdate = newTaps;
+
+              await updateUserProfile({
+                energyLevel: tapsToUpdate,
+              });
+            } catch (error) {
+              console.error("Error updating taps:", error);
+            } finally {
+              batchTimeout.current = null; // Reset the timeout reference
+            }
+          }, 1000);
+        }
     }
   };
 
@@ -445,9 +480,6 @@ useEffect(() => {
                   justifyContent={"center"}
                   alignItems={"center"}
                 >
-                  <Text fontSize={"24px"} lineHeight={"29.02px"}>
-                    17.95K
-                  </Text>
                   <Flex
                     w={"90%"}
                     mt={1}

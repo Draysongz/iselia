@@ -19,7 +19,7 @@ export const useUserLogin = (initData: string, referralCode?: string): UseUserLo
     const loginUser = async () => {
       setLoading(true);
       try {
-        const response = await axios.post('https://72dc-105-112-17-118.ngrok-free.app/api/auth', {
+        const response = await axios.post('https://f289-105-113-106-134.ngrok-free.app/api/auth', {
           initData,
           referralCode,
         });

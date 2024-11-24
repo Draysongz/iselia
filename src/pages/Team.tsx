@@ -1,29 +1,40 @@
-import { Box, Flex, Text, Icon, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Icon,
+  Image,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { GiZeusSword } from "react-icons/gi";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
 import { useUser } from "../context/context";
+
 // import useCharacter from "../hooks/useCharacter";
-
-
-  
 
 export default function Team() {
   const location = useLocation();
   const navigate = useNavigate();
   const { selectedContent } = location.state || {};
-   const { user, character } = useUser();
-   console.log(character)
-   console.log(user)
-    // const { fetchUserCharacters } = useCharacter(user?.id!);
+  const { user, character } = useUser();
+  console.log(character);
+  console.log(user);
+  // const { fetchUserCharacters } = useCharacter(user?.id!);
 
-  const [boxBackgrounds, setBoxBackgrounds] = useState<string[]>(Array(4).fill(""));
-  const { isOpen, onOpen, onClose }  = useDisclosure();
-
-
-
+  const [boxBackgrounds, setBoxBackgrounds] = useState<string[]>(
+    Array(4).fill("")
+  );
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Function to set a background image for a specific box
   const handleImageClick = (boxIndex: number, imageUrl: string) => {
@@ -35,18 +46,25 @@ export default function Team() {
   };
 
   const handleCharacterBoxClick = () => {
-    if (boxBackgrounds[0]) { // Check if a character is selected
+    if (boxBackgrounds[0]) {
+      // Check if a character is selected
       onOpen();
     }
   };
+
+  const calculateTotalDamage = ()=>{
+    let totalDamage = 0
+    for (let index = 0; index < character.length; index++) {
+      totalDamage= totalDamage + character[index].baseDamage
+    }
+    return totalDamage
+  }
 
   // Function to confirm and navigate to the home page
   const confirmBattle = () => {
     navigate("/", { state: { bgImage: boxBackgrounds[0] } });
   };
 
-
-  
   return (
     <Box
       display={"flex"}
@@ -346,7 +364,7 @@ export default function Team() {
                   textStroke: "1px black",
                 }}
               >
-                TOTAL DAMAGE: 0
+                TOTAL DAMAGE: {calculateTotalDamage()}
               </Text>
             )}
           </Flex>
@@ -406,91 +424,87 @@ export default function Team() {
                   </Box>
                 </Box>
               ) : (
-                <Box
-                  w={"100%"}
-                  h={{ base: "", sm: "150px" }}
-                  borderRadius={"10px"}
-                  bg={"#AB6C93C7"}
-                  border={"2px solid #59173E"}
-                ></Box>
+                <Box w={"85vw"} h={{ base: "55vh", sm: "70vh" }} >
+                  <Box
+                    w={"100%"}
+                    h={"80%"}
+                    mx={"auto"}
+                    display={"flex"}
+                    flexWrap={"wrap"} // Allows boxes to wrap to the next row
+                    alignItems={"center"}
+                    flexDirection={"row"}
+                    gap={4} // Space between items
+                    p={{ base: 2, sm: 4 }}
+                    borderBottomRadius={"10px"}
+                  >
+                    {Array.from({ length: 12 }).map((_, index) => {
+                      const isCharacterAvailable = character[index];
+                      return (
+                        <Box
+                          key={index}
+                          flex={"1 0 18%"} // Adjusts size: 22% of the container width with wrapping
+                          maxW={"22%"} // Ensures the box doesn't exceed 22% width
+                          h={{ base: "180px", sm: "100px" }} // Box height
+                          borderRadius={"10px"}
+                          bgImage={
+                            isCharacterAvailable ? character[index].bgImage! : ""
+                            
+                          }
+                          bgRepeat={
+                            isCharacterAvailable ? "no-repeat" : undefined
+                          }
+                          bgSize={isCharacterAvailable ? "cover" : undefined}
+                          bgPosition={"center"}
+                          position={"relative"}
+                          onClick={
+                            isCharacterAvailable
+                              ? () =>
+                                  handleImageClick(
+                                    index,
+                                    character[index].bgImage!
+                                  )
+                              : undefined
+                          }
+                          border={"2px solid #59173E"}
+                        >
+                          {isCharacterAvailable && (
+                            <Box
+                              w={"100%"}
+                              h={"30px"}
+                              bg={"rgba(0, 0, 0, 0.6)"}
+                              bottom={0}
+                              position={"absolute"}
+                              display={"flex"}
+                              alignItems={"center"}
+                              gap={2}
+                              px={2}
+                            >
+                              <Icon
+                                as={GiZeusSword}
+                                bg={"rgba(0, 0, 0, 1)"}
+                                boxSize={6}
+                                color={"white"}
+                              />
+                              <Text
+                                letterSpacing={"2px"}
+                                color={"white"}
+                                fontWeight={800}
+                                fontSize={"16px"}
+                                sx={{
+                                  WebkitTextStroke: "1px black",
+                                }}
+                              >
+                                {character[index].baseDamage || 0}{" "}
+                                {/* Adjust based on available data */}
+                              </Text>
+                            </Box>
+                          )}
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                </Box>
               )}
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
-              <Box
-                w={"100%"}
-                h={{ base: "", sm: "150px" }}
-                borderRadius={"10px"}
-                bg={"#AB6C93C7"}
-                border={"2px solid #59173E"}
-              ></Box>
             </Box>
           </Box>
         </Box>

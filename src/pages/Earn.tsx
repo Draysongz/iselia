@@ -5,9 +5,14 @@ import { initUtils } from "@telegram-apps/sdk";
 
 import NavigationBar from "../components/NavigationBar"
 import { useUser } from "../context/context";
+import { useState, useEffect } from "react";
+import { useUserAPI } from "../hooks/useUserApi";
 export default function Earn() {
   const {user} = useUser()
   const toast = useToast()
+    const [referredUser, setReferredUsers] = useState<any[]>([]);
+
+    const { fetchRefferals } = useUserAPI(user?.telegramId!);
 
     const handleInviteFriend = () => {
       const utils = initUtils();
@@ -28,6 +33,20 @@ export default function Earn() {
       duration: 2000
     })
   }
+
+    useEffect(() => {
+      const fetchRef = async () => {
+        const refUsers = await fetchRefferals();
+        console.log("ref users from ref page", refUsers);
+        setReferredUsers(refUsers.referredUsers || []);
+      };
+
+      if (user) {
+        fetchRef();
+      }
+    }, [user]);
+
+  console.log(referredUser);
     return (
       <Box
         display={"flex"}
@@ -282,13 +301,22 @@ export default function Earn() {
                           borderRadius={"10px"}
                         >
                           <Box textAlign={"center"}>
-                            <Text fontWeight={400}> 0 </Text>
+                            <Text fontWeight={400}>
+                              {" "}
+                              {referredUser && referredUser.length > 0
+                                ? referredUser.length
+                                : "0"}{" "}
+                            </Text>
                             <Text fontSize={"10px"} fontWeight={400}>
                               FRIENDS INVITED
                             </Text>
                           </Box>
                           <Box textAlign={"center"}>
-                            <Text fontWeight={400}> 0 </Text>
+                            <Text fontWeight={400}>
+                              {referredUser && referredUser.length > 0
+                                ? referredUser.length * 500
+                                : "0"}{" "}
+                            </Text>
                             <Text fontSize={"10px"} fontWeight={400}>
                               XP EARNED
                             </Text>

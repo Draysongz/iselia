@@ -82,7 +82,7 @@ export const useUserAPI = (userId: string | null) => {
 //     userEventEmitter.emit("userUpdated", user);
 //   }, [user]);
 
-  const BaseUrl = "https://72dc-105-112-17-118.ngrok-free.app/api";
+  const BaseUrl = "https://f289-105-113-106-134.ngrok-free.app/api";
 
   // Get user profile
   const fetchUserProfile = async () => {
@@ -190,7 +190,7 @@ export const useUserAPI = (userId: string | null) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(`${BaseUrl}/user/refill`, { userId });
+      const response = await axios.post(`${BaseUrl}/user/refill`, { userId: userId });
 
       const updatedUser = response.data.user;
 
