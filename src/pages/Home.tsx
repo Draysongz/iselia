@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Image, Progress, Spinner } from "@chakra-ui/react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
