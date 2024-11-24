@@ -73,7 +73,7 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
         }
       };
 
-      const intervalId = setInterval(handleRefill, 5000); // Runs every 5 seconds
+      const intervalId = setInterval(handleRefill, 10000); // Runs every 5 seconds
 
       return () => clearInterval(intervalId); // Cleanup on component unmount
     }, []);
@@ -173,7 +173,7 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
             } finally {
               batchTimeout.current = null; // Reset the timeout reference
             }
-          }, 1000);
+          }, 3000);
         }
     }
   };
