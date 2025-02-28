@@ -20,7 +20,7 @@ import "../index.css";
 import NavigationBar from "../components/NavigationBar";
 import { useUser } from "../context/context";
 
-import useCharacter from "../hooks/useCharacter";
+// import useCharacter from "../hooks/useCharacter";
 
 export default function Team() {
   const location = useLocation();
