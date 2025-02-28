@@ -6,7 +6,7 @@ export default function Loading() {
     <Box
       display={"flex"}
       flexDirection={"column"}
-      bg={'#050517'}
+      bg={"#050517"}
       width={"100vw"}
       minHeight={"100vh"}
       alignItems={"center"}
@@ -32,24 +32,32 @@ export default function Loading() {
         pt={3}
         gap={5}
         zIndex={0}
-        position={'relative'}
+        position={"relative"}
       >
         <Box
-          bg={"#800080"}
-          position={'absolute'}
-          top={'-270px'}
-          boxShadow="0 0 80px 80px rgba(128, 0, 128, 0.6)" // Adjust opacity as needed
+          bg={"#3F3E0F"}
+          position={"absolute"}
+          top={"-270px"}
+          boxShadow="0 0 80px 80px #3F3E0F" // Adjust opacity as needed
           backdropFilter="blur(8px)"
           w={"270px"}
           h={"270px"}
           borderRadius={"50%"}
-          opacity={'70%'}
-        //   mt={-72}
+          opacity={"70%"}
+          //   mt={-72}
         />
-        <Flex direction={"column"} gap={0} opacity={"70%"}>
-          <Image src="/Labels/WOItxt.png"/>
+        <Flex
+          direction={"column"}
+          gap={4}
+          opacity={"70%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          // mt={"-100px"}
+        >
+          <Image src="./Labels/logo.svg" w={"50%"} h={"50%"} />
+          <Image src="./Labels/text.svg" w={"50%"} h={"50%"} />
 
-          <Flex alignItems={"center"} direction={"column"} gap={1} mt={-10}>
+          <Flex alignItems={"center"} direction={"column"} gap={1}>
             <Progress
               value={60}
               size="sm"
@@ -59,7 +67,8 @@ export default function Loading() {
               h={"29px"}
               sx={{
                 "& > div": {
-                  background: "#800080",
+                  backgroundColor: "#E7E247",
+                  boxShadow: "0px 0px 50px #E7E247",
                 },
               }}
             />

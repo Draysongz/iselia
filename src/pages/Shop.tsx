@@ -161,7 +161,7 @@ export default function Shop() {
     <Box
       display={"flex"}
       flexDirection={"column"}
-      bgImage={"../Background/background.jpg"}
+      bgImage={"../Background/backdrop.svg"}
       bgRepeat={"no-repeat"}
       bgPosition={"center"}
       bgSize={"cover"}
@@ -190,10 +190,10 @@ export default function Shop() {
         position={"relative"}
       >
         <Box
-          bg={"#800080"}
+          bg={"#3F3E0F"}
           position={"absolute"}
           top={"-270px"}
-          boxShadow="0 0 80px 80px rgba(128, 0, 128, 0.6)" // Adjust opacity as needed
+          boxShadow="0 0 80px 80px #3F3E0F" // Adjust opacity as needed
           backdropFilter="blur(8px)"
           w={"270px"}
           h={"270px"}
@@ -201,12 +201,7 @@ export default function Shop() {
           opacity={"70%"}
         />
 
-        <Flex
-          gap={3}
-          w={"100%"}
-          justifyContent={"center"}
-          direction={"column"}
-        >
+        <Flex gap={3} w={"100%"} justifyContent={"center"} direction={"column"}>
           <Box alignSelf={"center"}>
             <TonConnectButton />
           </Box>

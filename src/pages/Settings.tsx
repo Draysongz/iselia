@@ -7,22 +7,20 @@ import {
   SliderThumb,
 } from "@chakra-ui/react";
 import NavigationBar from "../components/NavigationBar";
-import Switch from "../components/Switch"
-
-
+import Switch from "../components/Switch";
 
 export default function Settings() {
-    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
 
-    const toggleSwitch = () => {
-      setIsSwitchOn((prev) => !prev);
-    };
+  const toggleSwitch = () => {
+    setIsSwitchOn((prev) => !prev);
+  };
 
   return (
     <Box
       display={"flex"}
       flexDirection={"column"}
-      bgImage={"../Background/background.jpg"}
+      bgImage={"../Background/backdrop.svg"}
       bgRepeat={"no-repeat"}
       bgPosition={"center"}
       bgSize={"cover"}

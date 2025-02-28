@@ -20,7 +20,7 @@ import "../index.css";
 import NavigationBar from "../components/NavigationBar";
 import { useUser } from "../context/context";
 
-// import useCharacter from "../hooks/useCharacter";
+import useCharacter from "../hooks/useCharacter";
 
 export default function Team() {
   const location = useLocation();
@@ -29,7 +29,7 @@ export default function Team() {
   const { user, character } = useUser();
   console.log(character);
   console.log(user);
-  // const { fetchUserCharacters } = useCharacter(user?.id!);
+    // const { fetchUserCharacters } = useCharacter(user?.id!);
 
   const [boxBackgrounds, setBoxBackgrounds] = useState<string[]>(
     Array(4).fill("")
@@ -52,13 +52,13 @@ export default function Team() {
     }
   };
 
-  const calculateTotalDamage = ()=>{
-    let totalDamage = 0
+  const calculateTotalDamage = () => {
+    let totalDamage = 0;
     for (let index = 0; index < character.length; index++) {
-      totalDamage= totalDamage + character[index].baseDamage
+      totalDamage = totalDamage + character[index].baseDamage;
     }
-    return totalDamage
-  }
+    return totalDamage;
+  };
 
   // Function to confirm and navigate to the home page
   const confirmBattle = () => {
@@ -69,7 +69,7 @@ export default function Team() {
     <Box
       display={"flex"}
       flexDirection={"column"}
-      bgImage={"../Background/background.jpg"}
+      bgImage={"../Background/backdrop.svg"}
       bgRepeat={"no-repeat"}
       bgPosition={"center"}
       bgSize={"cover"}
@@ -424,7 +424,7 @@ export default function Team() {
                   </Box>
                 </Box>
               ) : (
-                <Box w={"85vw"} h={{ base: "55vh", sm: "70vh" }} >
+                <Box w={"85vw"} h={{ base: "55vh", sm: "70vh" }}>
                   <Box
                     w={"100%"}
                     h={"80%"}
@@ -447,8 +447,9 @@ export default function Team() {
                           h={{ base: "180px", sm: "100px" }} // Box height
                           borderRadius={"10px"}
                           bgImage={
-                            isCharacterAvailable ? character[index].bgImage! : ""
-                            
+                            isCharacterAvailable
+                              ? character[index].bgImage!
+                              : ""
                           }
                           bgRepeat={
                             isCharacterAvailable ? "no-repeat" : undefined

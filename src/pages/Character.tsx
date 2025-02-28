@@ -104,7 +104,7 @@ export default function Character() {
     <Box
       display="flex"
       flexDirection="column"
-      bgImage={"/girls/1.png"}
+      bgImage={"../Background/backdrop.svg"}
       bgRepeat="no-repeat"
       bgPosition="center"
       bgSize="cover"

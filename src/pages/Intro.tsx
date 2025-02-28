@@ -6,7 +6,7 @@ export default function Intro() {
     <Box
       display={"flex"}
       flexDirection={"column"}
-      bgImage={"../girls/1.png"}
+      bgImage={"../Background/backdrop.svg"}
       bgRepeat={"no-repeat"}
       bgPosition={"center"}
       bgSize={"cover"}
@@ -39,18 +39,30 @@ export default function Intro() {
         // bg={'red'}
       >
         <Box
-          bg={"#800080"}
+          bg={"#3F3E0F"}
           position={"absolute"}
           top={"-270px"}
-          boxShadow="0 0 80px 80px rgba(128, 0, 128, 0.6)" // Adjust opacity as needed
+          boxShadow="0 0 80px 80px #3F3E0F" // Adjust opacity as needed
           backdropFilter="blur(8px)"
           w={"270px"}
           h={"270px"}
           borderRadius={"50%"}
           opacity={"70%"}
         />
-        <Flex direction={"column"} gap={{ base: 2, sm: 5 }} w={"100%"} justifyContent={'center'} alignItems={'center'}>
-          <Flex alignItems={"center"} direction={"column"} gap={1} w={"100%"} mt={16}>
+        <Flex
+          direction={"column"}
+          gap={{ base: 2, sm: 5 }}
+          w={"100%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Flex
+            alignItems={"center"}
+            direction={"column"}
+            gap={1}
+            w={"100%"}
+            mt={16}
+          >
             <Box
               display={"flex"}
               flexDirection={"column"}
@@ -88,7 +100,20 @@ export default function Intro() {
               </Text>
             </Box>
           </Flex>
-          <Button border={'3px solid #050517'} bg={'#800080'} width={'90%'}  position={'absolute'} bottom={5} h={'53px'} borderRadius={'10px'} padding={'10px'} color={'#f7f7ff'} fontSize={'20px'} fontWeight={500} textAlign={'center'}>
+          <Button
+            border={"3px solid #050517"}
+            bg={"#800080"}
+            width={"90%"}
+            position={"absolute"}
+            bottom={5}
+            h={"53px"}
+            borderRadius={"10px"}
+            padding={"10px"}
+            color={"#f7f7ff"}
+            fontSize={"20px"}
+            fontWeight={500}
+            textAlign={"center"}
+          >
             Let's Go
           </Button>
         </Flex>

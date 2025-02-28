@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Image, Progress, Spinner } from "@chakra-ui/react";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../index.css";
 import NavigationBar from "../components/NavigationBar";
@@ -24,28 +24,25 @@ interface Monster {
   rewardPoints: string;
 }
 
-
 export default function Home() {
   // const location = useLocation();
   const { user, character } = useUser();
   const { updateUserProfile, refillTaps } = useUserAPI(user?.telegramId!);
   const { fetchUserCharacters } = useCharacter(user?.id!);
-const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
+  const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   useEffect(() => {
-     if (!user) return;
+    if (!user) return;
 
-     const fetchCharacters = async () => {
-       setIsLoadingCharacters(true); // Start loading
-       await fetchUserCharacters();
-       setIsLoadingCharacters(false); // End loading
-     };
+    const fetchCharacters = async () => {
+      setIsLoadingCharacters(true); // Start loading
+      await fetchUserCharacters();
+      setIsLoadingCharacters(false); // End loading
+    };
 
-     fetchCharacters();
+    fetchCharacters();
   }, [user?.telegramId]);
 
   // const { selectedContent } = location.state || {};
-
-
 
   const [points, setPoints] = useState(0);
   const [clicks, setClicks] = useState<{ id: number; x: number; y: number }[]>(
@@ -55,54 +52,77 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [characterProgress, setCharacterProgress] = useState(100); // Character's progress
   const [showGems, setShowGems] = useState(false); // To control gem display
   const [isTapping, setIsTapping] = useState(false); // Track if the player is tapping
-  const [energy, setEnergy] = useState(0)
+  const [energy, setEnergy] = useState(0);
   //  const batchTimeout = useRef<NodeJS.Timeout | null>(null);
 
-
-  useEffect(()=>{
-    if(!user) return;
+  useEffect(() => {
+    if (!user) return;
     setEnergy(user.energyLevel);
-  },[user])
+  }, [user]);
 
-    useEffect(() => {
-      const handleRefill = async () => {
-        try {
-          await refillTaps();
-        } catch (err) {
-          console.error("Error refilling taps:", err);
-        }
-      };
+  useEffect(() => {
+    const handleRefill = async () => {
+      try {
+        await refillTaps();
+      } catch (err) {
+        console.error("Error refilling taps:", err);
+      }
+    };
 
-      const intervalId = setInterval(handleRefill, 10000); // Runs every 5 seconds
+    const intervalId = setInterval(handleRefill, 10000); // Runs every 5 seconds
 
-      return () => clearInterval(intervalId); // Cleanup on component unmount
-    }, []);
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, []);
 
   // Array of monsters with unique HP, names, and images
   const monsters: Monster[] = [
     {
       name: "Funky Lemur",
       maxHp: 420,
-      image: "/Monsters/M1.png",
+      image: "/Monsters/M1.svg",
       rewardPoints: "500",
     },
     {
       name: "Monster 2",
       maxHp: 1200,
-      image: "/Monsters/M2.png",
+      image: "/Monsters/M2.svg",
       rewardPoints: "700",
     },
     {
       name: "Monster 3",
       maxHp: 1500,
-      image: "/Monsters/M3.png",
+      image: "/Monsters/M3.svg",
       rewardPoints: "1000",
     },
     {
       name: "Monster 4",
       maxHp: 2000,
-      image: "/Monsters/M4.png",
-      rewardPoints: "10500",
+      image: "/Monsters/M4.svg",
+      rewardPoints: "1500",
+    },
+    {
+      name: "Monster 5",
+      maxHp: 3500,
+      image: "/Monsters/M5.svg",
+      rewardPoints: "2000",
+    },
+    {
+      name: "Monster 6",
+      maxHp: 4000,
+      image: "/Monsters/M6.svg",
+      rewardPoints: "2700",
+    },
+    {
+      name: "Monster 7",
+      maxHp: 4700,
+      image: "/Monsters/M7.svg",
+      rewardPoints: "3000",
+    },
+    {
+      name: "Monster 8",
+      maxHp: 5500,
+      image: "/Monsters/M8.svg",
+      rewardPoints: "5500",
     },
   ];
 
@@ -119,11 +139,9 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [regenRate, setRegenRate] = useState(100);
   const [totalDamageDealt, setTotalDamageDealt] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  console.log(totalDamageDealt)
+  console.log(totalDamageDealt);
 
-
-
-  const handleCardClick = async(e: React.MouseEvent<HTMLDivElement>) => {
+  const handleCardClick = async (e: React.MouseEvent<HTMLDivElement>) => {
     if (!user || energy! <= 0) return;
     e.preventDefault();
     e.stopPropagation();
@@ -132,13 +150,12 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
       setIsTapping(true);
 
       console.log(damageValues);
-      console.log("energy left", energy)
+      console.log("energy left", energy);
 
       // Randomly pick a damage value from the array
       const damage = damageValues;
       const totalDamage = damage.reduce((acc, curr) => acc + curr, 0);
       setTotalDamageDealt((prev) => prev + totalDamage);
-     
 
       const card = e.currentTarget;
       const rect = card.getBoundingClientRect();
@@ -151,30 +168,29 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
         card.style.transform = "";
       }, 100);
 
-
       const newTaps = energy! - 1;
-      setEnergy(newTaps)
+      setEnergy(newTaps);
       setMonsterProgress((prev) => Math.max(prev - totalDamage, 0)); // Reduce monster's progress
       setPoints(points + totalDamage);
       setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
       setCharacterProgress((prev) => Math.max(prev - 2, 0)); // Reduce character progress by 2
-     
-        // if (!batchTimeout.current) {
-        //   batchTimeout.current = setTimeout(async () => {
-        //     try {
-        //       // Use the updated availableTaps and tapsBuffer for a consistent update
-        //       const tapsToUpdate = newTaps;
 
-        //       await updateUserProfile({
-        //         energyLevel: tapsToUpdate,
-        //       });
-        //     } catch (error) {
-        //       console.error("Error updating taps:", error);
-        //     } finally {
-        //       batchTimeout.current = null; // Reset the timeout reference
-        //     }
-        //   }, 3000);
-        // }
+      // if (!batchTimeout.current) {
+      //   batchTimeout.current = setTimeout(async () => {
+      //     try {
+      //       // Use the updated availableTaps and tapsBuffer for a consistent update
+      //       const tapsToUpdate = newTaps;
+
+      //       await updateUserProfile({
+      //         energyLevel: tapsToUpdate,
+      //       });
+      //     } catch (error) {
+      //       console.error("Error updating taps:", error);
+      //     } finally {
+      //       batchTimeout.current = null; // Reset the timeout reference
+      //     }
+      //   }, 3000);
+      // }
     }
   };
 
@@ -225,47 +241,47 @@ const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
 
   // Effect to handle monster defeat and transition to next monster
   // Effect to handle monster defeat and transition to the next monster
-useEffect(() => {
-  const handleMonsterDefeat = async () => {
-    if (!user || isTransitioning) return;
+  useEffect(() => {
+    const handleMonsterDefeat = async () => {
+      if (!user || isTransitioning) return;
 
-    if (monsterProgress === 0 && currentMonsterIndex < monsters.length - 1) {
-      setIsTransitioning(true); // Prevent re-execution while transitioning
+      if (monsterProgress === 0 && currentMonsterIndex < monsters.length - 1) {
+        setIsTransitioning(true); // Prevent re-execution while transitioning
 
-      // Customize rewards logic
-      const baseReward = 50; // Flat reward for defeating a monster
-      const levelMultiplier = monsters[currentMonsterIndex].maxHp / 10; // Scaling reward based on monster level
-      const rewards = baseReward + levelMultiplier;
+        // Customize rewards logic
+        const baseReward = 50; // Flat reward for defeating a monster
+        const levelMultiplier = monsters[currentMonsterIndex].maxHp / 10; // Scaling reward based on monster level
+        const rewards = baseReward + levelMultiplier;
 
-      console.log("Monster defeated! Rewards earned:", rewards);
+        console.log("Monster defeated! Rewards earned:", rewards);
 
-      try {
-        // Update user's profile with the new rewards
-        const updatedCoins = user.coins + rewards;
-        await updateUserProfile({ coins: updatedCoins });
+        try {
+          // Update user's profile with the new rewards
+          const updatedCoins = user.coins + rewards;
+          await updateUserProfile({ coins: updatedCoins });
 
-        console.log("Updated user coins:", updatedCoins);
+          console.log("Updated user coins:", updatedCoins);
 
-        // Show gems for a brief moment after defeating a monster
-        setShowGems(true);
+          // Show gems for a brief moment after defeating a monster
+          setShowGems(true);
 
-        // Transition to the next monster after a delay
-        setTimeout(() => {
-          setShowGems(false);
-          setCurrentMonsterIndex((prev) => prev + 1);
-          setMonsterProgress(monsters[currentMonsterIndex + 1].maxHp); // Reset monster progress
-          setTotalDamageDealt(0); // Reset damage tracker
-          setIsTransitioning(false); // Allow for future transitions
-        }, 2000);
-      } catch (error) {
-        console.error("Failed to update user profile:", error);
-        setIsTransitioning(false); // Reset transition state on error
+          // Transition to the next monster after a delay
+          setTimeout(() => {
+            setShowGems(false);
+            setCurrentMonsterIndex((prev) => prev + 1);
+            setMonsterProgress(monsters[currentMonsterIndex + 1].maxHp); // Reset monster progress
+            setTotalDamageDealt(0); // Reset damage tracker
+            setIsTransitioning(false); // Allow for future transitions
+          }, 2000);
+        } catch (error) {
+          console.error("Failed to update user profile:", error);
+          setIsTransitioning(false); // Reset transition state on error
+        }
       }
-    }
-  };
+    };
 
-  handleMonsterDefeat();
-}, [monsterProgress, currentMonsterIndex, monsters, user, isTransitioning]);
+    handleMonsterDefeat();
+  }, [monsterProgress, currentMonsterIndex, monsters, user, isTransitioning]);
 
   if (isLoadingCharacters) {
     return (
@@ -282,8 +298,6 @@ useEffect(() => {
     );
   }
 
-
-
   return (
     <>
       {character && character.length <= 0 ? (
@@ -292,7 +306,7 @@ useEffect(() => {
         <Box
           display={"flex"}
           flexDirection={"column"}
-          bgImage={"../Background/background.jpg"}
+          bgImage={"../Background/backdrop.svg"}
           bgRepeat={"no-repeat"}
           bgPosition={"center"}
           bgSize={"cover"}
@@ -301,16 +315,16 @@ useEffect(() => {
           alignItems={"center"}
           textColor={"white"}
           overflow={"hidden"}
-          // _before={{
-          //   content: '""',
-          //   position: "absolute",
-          //   top: 0,
-          //   left: 0,
-          //   width: "100%",
-          //   height: "100%",
-          //   backgroundColor: "#05051799",
-          //   zIndex: 0,
-          // }}
+          _before={{
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "#05051799",
+            zIndex: 0,
+          }}
         >
           <Flex
             width={"100%"}
@@ -439,7 +453,7 @@ useEffect(() => {
             </Flex>
             {user && !user.isNewPlayer ? (
               <>
-                <Box textAlign={"center"} mt={{ base: -4, sm: 0 }}>
+                <Box textAlign={"center"} mt={{ base: 4, sm: 0 }}>
                   <Text fontSize={"15px"} lineHeight={"18.13px"}>
                     Level 1
                   </Text>
@@ -539,8 +553,7 @@ useEffect(() => {
                   h={{ base: "400px", sm: "600px" }}
                   mt={{ base: 0, sm: -2 }}
                   alignItems={"center"}
-                  pt={{ base: 3, sm: 10 }}
-                  // bg={'red'}
+                  pt={{ base: 10, sm: 10 }}
                 >
                   <Flex
                     id="monster"
@@ -549,8 +562,8 @@ useEffect(() => {
                     justifyContent={"center"}
                     alignItems={"center"}
                     onClick={handleCardClick}
-                    bg={"#FFDF80"}
-                    border={"8px solid #59173E"}
+                    bgImage={"../Background/round.svg"}
+                    backgroundSize={"100% 100%"}
                     borderRadius={"50%"}
                     p={4}
                     position={"relative"}
@@ -567,15 +580,13 @@ useEffect(() => {
                         character.length > 0 &&
                         character.map((char, index) => {
                           return (
-                          
-                              <Image
-                                key={index}
-                                borderRadius={"50%"}
-                                src={char.bgImage}
-                                w={{ base: "45px", sm: "65px" }}
-                                h={{ base: "45px", sm: "65px" }}
-                              />
-                         
+                            <Image
+                              key={index}
+                              borderRadius={"50%"}
+                              src={char.bgImage}
+                              w={{ base: "45px", sm: "65px" }}
+                              h={{ base: "45px", sm: "65px" }}
+                            />
                           );
                         })}
                     </Flex>
